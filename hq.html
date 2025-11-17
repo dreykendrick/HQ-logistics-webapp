@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HQ Logistics - Reliable cargo transport from Dar es Salaam port to dry port. Track your shipment, request quotes, and experience trusted logistics services in Tanzania.">
+    <title>HQ Logistics | A Partner You Can Trust</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- EmailJS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #800020;
+            --secondary: #1a1a1a;
+            --accent: #a81c3f;
+            --light: #f5f5f5;
+            --white: #ffffff;
+            --gray: #666;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--secondary);
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        header.hide-mobile {
+            transform: translateY(-100%);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: var(--primary);
+            background: var(--white);
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .lang-toggle {
+            background: var(--white);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            transition: transform 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .lang-toggle:hover {
+            transform: scale(1.05);
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--white);
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+        
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Main Content Wrapper */
+        .main-content {
+            display: block;
+        }
+
+        .main-content.hidden {
+            display: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(128, 0, 32, 0.95) 100%), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23333" width="1200" height="600"/><path fill="%23444" d="M0 300L50 280L100 320L150 290L200 310L250 285L300 305L350 295L400 315L450 280L500 300L550 290L600 310L650 285L700 305L750 295L800 315L850 280L900 300L950 290L1000 310L1050 285L1100 305L1150 295L1200 315V600H0Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            padding: 8rem 2rem;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(128, 0, 32, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        /* Tracking Section */
+        .tracking-section {
+            background: var(--light);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--gray);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .tracking-box {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .tracking-input {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tracking-input input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .tracking-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .tracking-result {
+            display: none;
+            text-align: left;
+            padding: 1.5rem;
+            background: var(--light);
+            border-radius: 10px;
+            animation: fadeIn 0.5s;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .status-item i {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 5rem 2rem;
+            background: var(--white);
+        }
+
+        .services-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(128, 0, 32, 0.2);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
+        }
+
+        .service-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+
+        .service-card:hover i {
+            color: var(--white);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Interactive Map */
+        .logistics-flow {
+            background: var(--secondary);
+            color: var(--white);
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .flow-container {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .flow-step {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .flow-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2.5rem;
+            box-shadow: 0 10px 30px rgba(128, 0, 32, 0.3);
+            transition: all 0.3s;
+        }
+
+        .flow-step:hover .flow-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: var(--accent);
+        }
+
+        .flow-arrow {
+            position: absolute;
+            right: -2rem;
+            top: 45px;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .flow-step:last-child .flow-arrow {
+            display: none;
+        }
+
+        /* Quote Form */
+        .quote-section {
+            padding: 5rem 2rem;
+            background: var(--light);
+        }
+
+        .quote-form {
+            max-width: 700px;
+            margin: 3rem auto 0;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 5rem 2rem;
+            background: var(--white);
+        }
+
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 5rem;
+            color: var(--primary);
+            opacity: 0.2;
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: var(--gray);
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 5rem 2rem;
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-top: 0.2rem;
+        }
+
+        .map-container {
+            height: 400px;
+            background: var(--light);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a0a;
+            color: var(--white);
+            padding: 3rem 2rem 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-section a:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid #333;
+            padding-top: 1rem;
+            opacity: 0.7;
+        }
+
+        /* Client Portal as Full Page */
+        .portal-page {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--light) 0%, #e8e8e8 100%);
+            padding: 6rem 2rem 4rem;
+        }
+
+        .portal-page.active {
+            display: block;
+        }
+
+        .portal-container {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 420px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .portal-form {
+            padding: 0 1rem;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            background: var(--white);
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .back-to-home:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateX(-5px);
+        }
+
+        .portal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .portal-header i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .portal-header h2 {
+            color: var(--secondary);
+            margin-bottom: 0.3rem;
+            font-size: 1.8rem;
+        }
+
+        .portal-header p {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .portal-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .portal-tab {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .portal-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .portal-content {
+            display: none;
+        }
+
+        .portal-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .portal-form .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .portal-form label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 0.85rem;
+        }
+
+        .portal-form input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border 0.3s;
+        }
+
+        .portal-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .portal-form .btn {
+            width: 100%;
+            margin-top: 0.5rem;
+            padding: 0.85rem 2rem;
+            font-size: 0.95rem;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 0.3rem;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+
+        .forgot-password a:hover {
+            color: var(--accent);
+        }
+
+        .portal-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.2rem 0;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .portal-divider::before,
+        .portal-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .portal-divider::before {
+            margin-right: 1rem;
+        }
+
+        .portal-divider::after {
+            margin-left: 1rem;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 0.9rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: var(--white);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .social-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .social-btn i {
+            font-size: 1.5rem;
+        }
+
+        .social-btn.google {
+            color: #DB4437;
+        }
+
+        .social-btn.facebook {
+            color: #4267B2;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-container {
+            display: none;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .dashboard-container.active {
+            display: block;
+        }
+
+        .portal-page .dashboard-container {
+            max-width: 1100px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-header h2 {
+            color: var(--secondary);
+            margin-bottom: 0.3rem;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .user-info i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-info h3 {
+            margin-bottom: 0.2rem;
+            font-size: 1.3rem;
+        }
+
+        .user-info p {
+            font-size: 0.9rem;
+            opacity: 0.95;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-card h4 {
+            color: var(--secondary);
+            margin-bottom: 0.2rem;
+            font-size: 0.9rem;
+        }
+
+        .stat-card p {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .shipment-list {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .shipment-list h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .shipment-item {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+
+        .shipment-item:hover {
+            background: #e8e8e8;
+            transform: translateX(5px);
+        }
+
+        .shipment-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .shipment-info h4 {
+            color: var(--secondary);
+            margin-bottom: 0.2rem;
+            font-size: 1rem;
+        }
+
+        .shipment-info p {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .shipment-status {
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .status-transit {
+            background: #FFF3CD;
+            color: #856404;
+        }
+
+        .status-delivered {
+            background: #D4EDDA;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #F8D7DA;
+            color: #721C24;
+        }
+
+        .logout-btn {
+            background: var(--secondary);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: block;
+            margin: 1.5rem auto 0;
+            font-size: 0.95rem;
+        }
+
+        .logout-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                flex-direction: column;
+                background: var(--secondary);
+                width: 100%;
+                padding: 2rem;
+                transition: left 0.3s;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+                align-items: flex-start;
+                height: calc(100vh - 70px);
+                overflow-y: auto;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .lang-toggle {
+                display: none;
+            }
+            
+            .mobile-lang-item {
+                display: block;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-lang-item {
+                display: none;
+            }
+        }
+
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-truck-moving"></i>
+                <span>HQ LOGISTICS</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" data-en="Home" data-sw="Nyumbani">Home</a></li>
+                <li><a href="#services" data-en="Services" data-sw="Huduma">Services</a></li>
+                <li><a href="#tracking" data-en="Track Cargo" data-sw="Fuatilia Mizigo">Track Cargo</a></li>
+                <li><a href="#quote" data-en="Get Quote" data-sw="Omba Bei">Get Quote</a></li>
+                <li><a href="#contact" data-en="Contact" data-sw="Wasiliana">Contact</a></li>
+                <li><a href="#portal" onclick="showPortalPage(event)" data-en="Client Portal" data-sw="Kituo cha Mteja"><i class="fas fa-user-circle"></i> Client Portal</a></li>
+                <li class="mobile-lang-item">
+                    <button class="mobile-lang-btn" onclick="toggleLanguage()">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLangText">English</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </li>
+            </ul>
+            <button class="lang-toggle" onclick="toggleLanguage()">EN / SW</button>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content" id="mainContent">
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 data-en="A Partner You Can Trust" data-sw="Mshirika Unayeweza Kumwamini">A Partner You Can Trust</h1>
+            <p data-en="Reliable cargo transport from Dar es Salaam port to dry port. Fast, secure, and efficient logistics solutions for your business." data-sw="Usafirishaji wa mizigo wa kuaminika kutoka bandari ya Dar es Salaam hadi bandari kavu. Suluhisho la haraka, salama na la ufanisi kwa biashara yako.">Reliable cargo transport from Dar es Salaam port to dry port. Fast, secure, and efficient logistics solutions for your business.</p>
+            <div class="cta-buttons">
+                <a href="#quote" class="btn btn-primary" data-en="Get a Quote" data-sw="Omba Bei">Get a Quote</a>
+                <a href="#tracking" class="btn btn-secondary" data-en="Track Your Cargo" data-sw="Fuatilia Mizigo Yako">Track Your Cargo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tracking Section -->
+    <section class="tracking-section" id="tracking">
+        <h2 class="section-title" data-en="Track Your Cargo" data-sw="Fuatilia Mizigo Yako">Track Your Cargo</h2>
+        <p class="section-subtitle" data-en="Enter your tracking number to check shipment status in real-time" data-sw="Ingiza nambari yako ya ufuatiliaji ili kuangalia hali ya usafirishaji kwa wakati halisi">Enter your tracking number to check shipment status in real-time</p>
+        
+        <div class="tracking-box">
+            <div class="tracking-input">
+                <input type="text" id="trackingNumber" placeholder="Enter tracking number (e.g., HQ123456)">
+                <button class="btn btn-primary" onclick="trackCargo()"><i class="fas fa-search"></i> <span data-en="Track" data-sw="Fuatilia">Track</span></button>
+            </div>
+            
+            <div class="tracking-result" id="trackingResult">
+                <div class="status-item">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <strong data-en="Cargo Received at Port" data-sw="Mizigo Imepokelewa Bandari">Cargo Received at Port</strong>
+                        <p data-en="Your cargo has been received at Dar es Salaam Port" data-sw="Mizigo yako imepokelewa kwenye Bandari ya Dar es Salaam">Your cargo has been received at Dar es Salaam Port</p>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-truck"></i>
+                    <div>
+                        <strong data-en="In Transit" data-sw="Njiani">In Transit</strong>
+                        <p data-en="Cargo is currently being transported to the dry port" data-sw="Mizigo inasafirishwa kwa sasa hadi bandari kavu">Cargo is currently being transported to the dry port</p>
+                    </div>
+                </div>
+                <div class="status-item">
+                    <i class="fas fa-warehouse"></i>
+                    <div>
+                        <strong data-en="Arrived at Dry Port" data-sw="Imefika Bandari Kavu">Arrived at Dry Port</strong>
+                        <p data-en="Ready for collection" data-sw="Iko tayari kuchukuliwa">Ready for collection</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="services-container">
+            <h2 class="section-title" data-en="Our Services" data-sw="Huduma Zetu">Our Services</h2>
+            <p class="section-subtitle" data-en="Comprehensive logistics solutions tailored to your needs" data-sw="Suluhisho kamili za usafirishaji zinazokidhi mahitaji yako">Comprehensive logistics solutions tailored to your needs</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h3 data-en="Port to Dry Port Transport" data-sw="Usafirishaji Bandari hadi Bandari Kavu">Port to Dry Port Transport</h3>
+                    <p data-en="Efficient cargo movement from Dar es Salaam port to dry port with real-time tracking" data-sw="Usogezaji wa mizigo wa ufanisi kutoka bandari ya Dar es Salaam hadi bandari kavu na ufuatiliaji wa wakati halisi">Efficient cargo movement from Dar es Salaam port to dry port with real-time tracking</p>
+                </div>
+                
+                <div class="service-card">
+                    <i class="fas fa-box"></i>
+                    <h3 data-en="Cargo Handling" data-sw="Ushughulikaji wa Mizigo">Cargo Handling</h3>
+                    <p data-en="Professional handling of all cargo types with specialized equipment and trained staff" data-sw="Ushughulikaji wa kitaalamu wa aina zote za mizigo kwa vifaa maalum na wafanyakazi waliofunzwa">Professional handling of all cargo types with specialized equipment and trained staff</p>
+                </div>
+                
+                <div class="service-card">
+                    <i class="fas fa-warehouse"></i>
+                    <h3 data-en="Warehousing & Storage" data-sw="Ghala na Uhifadhi">Warehousing & Storage</h3>
+                    <p data-en="Secure storage facilities at the dry port for short and long-term needs" data-sw="Vituo salama vya kuhifadhia kwenye bandari kavu kwa mahitaji ya muda mfupi na mrefu">Secure storage facilities at the dry port for short and long-term needs</p>
+                </div>
+                
+                <div class="service-card">
+                    <i class="fas fa-file-invoice"></i>
+                    <h3 data-en="Customs Clearance Support" data-sw="Msaada wa Forodha">Customs Clearance Support</h3>
+                    <p data-en="Expert assistance with customs documentation and clearance processes" data-sw="Usaidizi wa kitaalamu na nyaraka za forodha na michakato ya ufunguaji">Expert assistance with customs documentation and clearance processes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Logistics Flow -->
+    <section class="logistics-flow">
+        <h2 class="section-title" data-en="How It Works" data-sw="Jinsi Inavyofanya Kazi">How It Works</h2>
+        <p class="section-subtitle" data-en="Our streamlined process from port to delivery" data-sw="Mchakato wetu uliobobea kutoka bandari hadi utoaji">Our streamlined process from port to delivery</p>
+        
+        <div class="flow-container">
+            <div class="flow-step">
+                <div class="flow-icon">
+                    <i class="fas fa-anchor"></i>
+                </div>
+                <h3 data-en="Cargo Arrival" data-sw="Kuwasili kwa Mizigo">Cargo Arrival</h3>
+                <p data-en="Your cargo arrives at Dar es Salaam port" data-sw="Mizigo yako inafika bandari ya Dar es Salaam">Your cargo arrives at Dar es Salaam port</p>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+            </div>
+            
+            <div class="flow-step">
+                <div class="flow-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <h3 data-en="Processing" data-sw="Usindikaji">Processing</h3>
+                <p data-en="We handle documentation and customs" data-sw="Tunashughulikia nyaraka na forodha">We handle documentation and customs</p>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+            </div>
+            
+            <div class="flow-step">
+                <div class="flow-icon">
+                    <i class="fas fa-truck-loading"></i>
+                </div>
+                <h3 data-en="Transport" data-sw="Usafirishaji">Transport</h3>
+                <p data-en="Safe transport to dry port facility" data-sw="Usafirishaji salama hadi kituo cha bandari kavu">Safe transport to dry port facility</p>
+                <i class="fas fa-arrow-right flow-arrow"></i>
+            </div>
+            
+            <div class="flow-step">
+                <div class="flow-icon">
+                    <i class="fas fa-check-double"></i>
+                </div>
+                <h3 data-en="Collection" data-sw="Ukusanyaji">Collection</h3>
+                <p data-en="Ready for you to collect your cargo" data-sw="Iko tayari kwa ajili yako kuchukua mizigo yako">Ready for you to collect your cargo</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="quote-section" id="quote">
+        <div class="services-container">
+            <h2 class="section-title" data-en="Request a Quote" data-sw="Omba Bei">Request a Quote</h2>
+            <p class="section-subtitle" data-en="Fill out the form below and we'll get back to you within 24 hours" data-sw="Jaza fomu hapa chini na tutakurudishia jibu ndani ya masaa 24">Fill out the form below and we'll get back to you within 24 hours</p>
+            
+            <form class="quote-form" id="quoteForm" onsubmit="submitQuote(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-en="Full Name" data-sw="Jina Kamili">Full Name *</label>
+                        <input type="text" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label data-en="Company Name" data-sw="Jina la Kampuni">Company Name</label>
+                        <input type="text" placeholder="Your Company Ltd">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-en="Email Address" data-sw="Barua Pepe">Email Address *</label>
+                        <input type="email" required placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label data-en="Phone Number" data-sw="Nambari ya Simu">Phone Number *</label>
+                        <input type="tel" required placeholder="+255 123 456 789">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-en="Cargo Type" data-sw="Aina ya Mizigo">Cargo Type *</label>
+                        <select required>
+                            <option value="" data-en="Select cargo type" data-sw="Chagua aina ya mizigo">Select cargo type</option>
+                            <option value="general" data-en="General Cargo" data-sw="Mizigo ya Kawaida">General Cargo</option>
+                            <option value="container" data-en="Container" data-sw="Kontena">Container</option>
+                            <option value="heavy" data-en="Heavy Equipment" data-sw="Vifaa Vizito">Heavy Equipment</option>
+                            <option value="vehicle" data-en="Vehicles" data-sw="Magari">Vehicles</option>
+                            <option value="perishable" data-en="Perishable Goods" data-sw="Bidhaa Zinazoharibika">Perishable Goods</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label data-en="Weight (kg)" data-sw="Uzito (kg)">Weight (kg) *</label>
+                        <input type="number" required placeholder="1000">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label data-en="Cargo Description" data-sw="Maelezo ya Mizigo">Cargo Description</label>
+                    <textarea rows="4" placeholder="Provide details about your cargo..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-paper-plane"></i> <span data-en="Submit Request" data-sw="Wasilisha Ombi">Submit Request</span>
+                </button>
+                
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i> <span data-en="Thank you! We'll contact you within 24 hours." data-sw="Asante! Tutawasiliana nawe ndani ya masaa 24.">Thank you! We'll contact you within 24 hours.</span>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="services-container">
+            <h2 class="section-title" data-en="What Our Clients Say" data-sw="Wateja Wetu Wanasema Nini">What Our Clients Say</h2>
+            <p class="section-subtitle" data-en="Trusted by businesses across Tanzania" data-sw="Wanaaminiwa na biashara kote Tanzania">Trusted by businesses across Tanzania</p>
+            
+            <div class="testimonials-container">
+                <div class="testimonial-card">
+                    <div class="testimonial-content" data-en="HQ Logistics has been our go-to partner for over 2 years. Their reliability and efficiency have helped us streamline our supply chain operations significantly." data-sw="HQ Logistics imekuwa mshirika wetu kwa zaidi ya miaka 2. Uaminifu na ufanisi wao umetusaidia kuboresha shughuli zetu za usambazaji kwa kiasi kikubwa.">HQ Logistics has been our go-to partner for over 2 years. Their reliability and efficiency have helped us streamline our supply chain operations significantly.</div>
+                    <div class="testimonial-author">- Sarah Mwangi, Import Manager</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content" data-en="The tracking system is excellent and gives us peace of mind. We always know where our cargo is. Fast turnaround times and professional service." data-sw="Mfumo wa ufuatiliaji ni bora sana na unatupatia utulivu wa akili. Tunajua kila wakati mizigo yetu ipo wapi. Muda wa haraka wa ukarabati na huduma ya kitaalamu.">The tracking system is excellent and gives us peace of mind. We always know where our cargo is. Fast turnaround times and professional service.</div>
+                    <div class="testimonial-author">- John Massawe, Logistics Coordinator</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content" data-en="Professional team that understands the complexities of cargo handling. They've helped us navigate customs clearance smoothly every time." data-sw="Timu ya kitaalamu inayoelewa utata wa ushughulikaji wa mizigo. Wametusaidia kupitia ufunguaji wa forodha kwa urahisi kila wakati.">Professional team that understands the complexities of cargo handling. They've helped us navigate customs clearance smoothly every time.</div>
+                    <div class="testimonial-author">- Grace Kimaro, Supply Chain Director</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="services-container">
+            <h2 class="section-title" data-en="Contact Us" data-sw="Wasiliana Nasi">Contact Us</h2>
+            <p class="section-subtitle" data-en="Get in touch with our team" data-sw="Wasiliana na timu yetu">Get in touch with our team</p>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3 data-en="Main Office" data-sw="Ofisi Kuu">Main Office</h3>
+                            <p>Dar es Salaam Port Area<br>Tanzania</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-warehouse"></i>
+                        <div>
+                            <h3 data-en="Dry Port Location" data-sw="Mahali pa Bandari Kavu">Dry Port Location</h3>
+                            <p>Dry Port Facility<br>Dar es Salaam, Tanzania</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3 data-en="Phone" data-sw="Simu">Phone</h3>
+                            <p>+255 XX XXX XXXX<br>Available 24/7</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3 data-en="Email" data-sw="Barua Pepe">Email</h3>
+                            <p>info@hqlogistics.co.tz<br>support@hqlogistics.co.tz</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <div>
+                            <h3>WhatsApp</h3>
+                            <p>+255 XX XXX XXXX<br data-en="Quick response guaranteed" data-sw="Jibu la haraka linahakikishwa">Quick response guaranteed</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.419544182234!2d39.2831944!3d-6.8309531!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185c4b0c3c3c3c3b%3A0x3c3c3c3c3c3c3c3c!2sDar%20es%20Salaam%20Port!5e0!3m2!1sen!2stz!4v1234567890123" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HQ LOGISTICS</h3>
+                <p data-en="Your trusted partner for reliable cargo transport from port to dry port in Tanzania." data-sw="Mshirika wako wa kuaminika kwa usafirishaji wa mizigo wa kutegemewa kutoka bandari hadi bandari kavu Tanzania.">Your trusted partner for reliable cargo transport from port to dry port in Tanzania.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 data-en="Quick Links" data-sw="Viungo vya Haraka">Quick Links</h3>
+                <ul>
+                    <li><a href="#home" data-en="Home" data-sw="Nyumbani">Home</a></li>
+                    <li><a href="#services" data-en="Services" data-sw="Huduma">Services</a></li>
+                    <li><a href="#tracking" data-en="Track Cargo" data-sw="Fuatilia Mizigo">Track Cargo</a></li>
+                    <li><a href="#quote" data-en="Get Quote" data-sw="Omba Bei">Get Quote</a></li>
+                    <li><a href="#contact" data-en="Contact" data-sw="Wasiliana">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 data-en="Services" data-sw="Huduma">Services</h3>
+                <ul>
+                    <li><a href="#" data-en="Port to Dry Port Transport" data-sw="Usafirishaji Bandari hadi Bandari Kavu">Port to Dry Port Transport</a></li>
+                    <li><a href="#" data-en="Cargo Handling" data-sw="Ushughulikaji wa Mizigo">Cargo Handling</a></li>
+                    <li><a href="#" data-en="Warehousing" data-sw="Uhifadhi">Warehousing</a></li>
+                    <li><a href="#" data-en="Customs Support" data-sw="Msaada wa Forodha">Customs Support</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 data-en="Operating Hours" data-sw="Masaa ya Kufanya Kazi">Operating Hours</h3>
+                <ul>
+                    <li data-en="Monday - Friday: 7:00 AM - 6:00 PM" data-sw="Jumatatu - Ijumaa: 7:00 Asubuhi - 6:00 Jioni">Monday - Friday: 7:00 AM - 6:00 PM</li>
+                    <li data-en="Saturday: 8:00 AM - 2:00 PM" data-sw="Jumamosi: 8:00 Asubuhi - 2:00 Mchana">Saturday: 8:00 AM - 2:00 PM</li>
+                    <li data-en="Sunday: Closed" data-sw="Jumapili: Imefungwa">Sunday: Closed</li>
+                    <li data-en="24/7 Emergency Support" data-sw="Msaada wa Dharura 24/7">24/7 Emergency Support</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 HQ Logistics. <span data-en="All rights reserved." data-sw="Haki zote zimehifadhiwa.">All rights reserved.</span></p>
+        </div>
+    </footer>
+
+    </div>
+    <!-- End Main Content Wrapper -->
+
+    <!-- Client Portal Page -->
+    <section class="portal-page" id="portalPage">
+        <div class="portal-container">
+            <a href="#home" class="back-to-home" onclick="hidePortalPage(event)">
+                <i class="fas fa-arrow-left"></i>
+                <span data-en="Back to Home" data-sw="Rudi Nyumbani">Back to Home</span>
+            </a>
+            
+            <!-- Login/Signup Forms -->
+            <div id="authForms">
+                <div class="portal-header">
+                    <i class="fas fa-user-circle"></i>
+                    <h2 data-en="Client Portal" data-sw="Kituo cha Mteja">Client Portal</h2>
+                    <p data-en="Access your shipments and manage your account" data-sw="Fikia mizigo yako na dhibiti akaunti yako">Access your shipments and manage your account</p>
+                </div>
+
+                <div class="portal-tabs">
+                    <button class="portal-tab active" onclick="switchTab('login')" data-en="Login" data-sw="Ingia">Login</button>
+                    <button class="portal-tab" onclick="switchTab('signup')" data-en="Sign Up" data-sw="Jisajili">Sign Up</button>
+                </div>
+
+                <!-- Login Form -->
+                <div class="portal-content active" id="loginContent">
+                    <form class="portal-form" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label data-en="Email Address" data-sw="Barua Pepe">Email Address</label>
+                            <input type="email" required placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Password" data-sw="Nywila">Password</label>
+                            <input type="password" required placeholder="••••••••">
+                        </div>
+                        <div class="forgot-password">
+                            <a href="#" data-en="Forgot Password?" data-sw="Umesahau Nywila?">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> <span data-en="Login" data-sw="Ingia">Login</span>
+                        </button>
+                    </form>
+
+                    <div class="portal-divider" data-en="or continue with" data-sw="au endelea na">or continue with</div>
+
+                    <div class="social-login">
+                        <button class="social-btn google" onclick="socialLogin('google')">
+                            <i class="fab fa-google"></i>
+                        </button>
+                        <button class="social-btn facebook" onclick="socialLogin('facebook')">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard (shown after login) -->
+            <div class="dashboard-container" id="dashboardContent">
+                <div class="dashboard-header">
+                    <h2 data-en="Welcome Back!" data-sw="Karibu Tena!">Welcome Back!</h2>
+                </div>
+
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <h3 id="userName">John Doe</h3>
+                    <p id="userEmail">john@example.com</p>
+                </div>
+
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-box"></i>
+                        <h4 data-en="Active Shipments" data-sw="Mizigo Hai">Active Shipments</h4>
+                        <p>3</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle"></i>
+                        <h4 data-en="Completed" data-sw="Iliyokamilika">Completed</h4>
+                        <p>12</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <h4 data-en="Pending" data-sw="Inasubiri">Pending</h4>
+                        <p>1</p>
+                    </div>
+                </div>
+
+                <div class="shipment-list">
+                    <h3 data-en="Recent Shipments" data-sw="Mizigo ya Hivi Karibuni">Recent Shipments</h3>
+                    
+                    <div class="shipment-item">
+                        <div class="shipment-info">
+                            <h4>HQ123456</h4>
+                            <p data-en="Container - 2 Tons" data-sw="Kontena - Tani 2">Container - 2 Tons</p>
+                            <p><i class="fas fa-calendar"></i> Nov 10, 2025</p>
+                        </div>
+                        <span class="shipment-status status-transit" data-en="In Transit" data-sw="Njiani">In Transit</span>
+                    </div>
+
+                    <div class="shipment-item">
+                        <div class="shipment-info">
+                            <h4>HQ123455</h4>
+                            <p data-en="General Cargo - 1.5 Tons" data-sw="Mizigo ya Kawaida - Tani 1.5">General Cargo - 1.5 Tons</p>
+                            <p><i class="fas fa-calendar"></i> Nov 8, 2025</p>
+                        </div>
+                        <span class="shipment-status status-delivered" data-en="Delivered" data-sw="Imefika">Delivered</span>
+                    </div>
+
+                    <div class="shipment-item">
+                        <div class="shipment-info">
+                            <h4>HQ123454</h4>
+                            <p data-en="Heavy Equipment - 5 Tons" data-sw="Vifaa Vizito - Tani 5">Heavy Equipment - 5 Tons</p>
+                            <p><i class="fas fa-calendar"></i> Nov 5, 2025</p>
+                        </div>
+                        <span class="shipment-status status-pending" data-en="Pending" data-sw="Inasubiri">Pending</span>
+                    </div>
+                </div>
+
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> <span data-en="Logout" data-sw="Toka">Logout</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize EmailJS with your Public Key
+        (function() {
+            emailjs.init("23kuhvC5NQ_UQo25m");
+        })();
+
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://zoamybopeghkvrdjvxbb.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvYW15Ym9wZWdoa3ZyZGp2eGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4MTUzODUsImV4cCI6MjA3ODM5MTM4NX0.qbym3I5xjsuvl0g8ybjzL-AE4TwANwjvNOknfQLufJ0';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        let currentUser = null;
+        
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                currentUser = session.user;
+                console.log('User logged in:', currentUser.email);
+            } else {
+                currentUser = null;
+            }
+        });
+
+        // Client Portal Functions
+        function showPortalPage(event) {
+            event.preventDefault();
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('portalPage').classList.add('active');
+            window.scrollTo(0, 0);
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.querySelector('.menu-toggle');
+            if (navLinks) navLinks.classList.remove('active');
+            if (menuToggle) menuToggle.classList.remove('active');
+        }
+        
+        function hidePortalPage(event) {
+            event.preventDefault();
+            document.getElementById('portalPage').classList.remove('active');
+            document.getElementById('mainContent').classList.remove('hidden');
+            document.getElementById('authForms').style.display = 'block';
+            document.getElementById('dashboardContent').classList.remove('active');
+            window.scrollTo(0, 0);
+        }
+        
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.portal-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('loginContent').classList.remove('active');
+            document.getElementById('signupContent').classList.remove('active');
+            
+            if (tab === 'login') {
+                document.getElementById('loginContent').classList.add('active');
+            } else {
+                document.getElementById('signupContent').classList.add('active');
+            }
+        }
+        
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = event.target[0].value;
+            const password = event.target[1].value;
+            
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) throw error;
+                
+                const userData = {
+                    name: data.user.user_metadata.name || data.user.email.split('@')[0],
+                    email: data.user.email
+                };
+                
+                showDashboard(userData);
+                await loadUserShipments(data.user.id);
+                
+            } catch (error) {
+                alert(currentLang === 'en' ? 
+                    'Invalid email or password' : 
+                    'Barua pepe au nywila si sahihi');
+                console.error('Login error:', error);
+            }
+        }
+        
+        async function handleSignup(event) {
+            event.preventDefault();
+            const name = event.target[0].value;
+            const email = event.target[1].value;
+            const phone = event.target[2].value;
+            const password = event.target[3].value;
+            
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            name: name,
+                            phone: phone
+                        }
+                    }
+                });
+                
+                if (error) throw error;
+                
+                alert(currentLang === 'en' ? 
+                    'Account created! Please check your email to verify.' : 
+                    'Akaunti imeundwa! Tafadhali angalia barua pepe yako kuhakikisha.');
+                
+                const userData = {
+                    name: name,
+                    email: email
+                };
+                showDashboard(userData);
+                
+            } catch (error) {
+                alert(currentLang === 'en' ? 
+                    'Error creating account: ' + error.message : 
+                    'Hitilafu kuunda akaunti: ' + error.message);
+                console.error('Signup error:', error);
+            }
+        }
+        
+        function showDashboard(userData) {
+            document.getElementById('authForms').style.display = 'none';
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('userEmail').textContent = userData.email;
+            document.getElementById('dashboardContent').classList.add('active');
+        }
+
+        async function loadUserShipments(userId) {
+            try {
+                const { data, error } = await supabase
+                    .from('shipments')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                displayShipments(data);
+                updateStats(data);
+                
+            } catch (error) {
+                console.error('Error loading shipments:', error);
+            }
+        }
+        
+        function displayShipments(shipments) {
+            const shipmentList = document.querySelector('.shipment-list');
+            
+            if (shipments.length === 0) {
+                shipmentList.innerHTML = '<h3 data-en="Recent Shipments" data-sw="Mizigo ya Hivi Karibuni">Recent Shipments</h3><p style="text-align: center; color: var(--gray); padding: 2rem 0;">No shipments yet</p>';
+                return;
+            }
+            
+            let html = '<h3 data-en="Recent Shipments" data-sw="Mizigo ya Hivi Karibuni">Recent Shipments</h3>';
+            
+            shipments.forEach(shipment => {
+                const statusClass = shipment.status === 'delivered' ? 'status-delivered' : 
+                                  shipment.status === 'in_transit' ? 'status-transit' : 'status-pending';
+                                  
+                html += `
+                    <div class="shipment-item">
+                        <div class="shipment-info">
+                            <h4>${shipment.tracking_number}</h4>
+                            <p>${shipment.cargo_type} - ${shipment.weight} kg</p>
+                            <p><i class="fas fa-calendar"></i> ${new Date(shipment.created_at).toLocaleDateString()}</p>
+                        </div>
+                        <span class="shipment-status ${statusClass}">${shipment.status.replace('_', ' ')}</span>
+                    </div>
+                `;
+            });
+            
+            shipmentList.innerHTML = html;
+        }
+        
+        function updateStats(shipments) {
+            const active = shipments.filter(s => s.status === 'in_transit' || s.status === 'at_port').length;
+            const completed = shipments.filter(s => s.status === 'delivered').length;
+            const pending = shipments.filter(s => s.status === 'pending').length;
+            
+            document.querySelector('.stat-card:nth-child(1) p').textContent = active;
+            document.querySelector('.stat-card:nth-child(2) p').textContent = completed;
+            document.querySelector('.stat-card:nth-child(3) p').textContent = pending;
+        }
+        
+        async function handleLogout() {
+            try {
+                await supabase.auth.signOut();
+                document.getElementById('authForms').style.display = 'block';
+                document.getElementById('dashboardContent').classList.remove('active');
+                hidePortalPage(new Event('click'));
+                alert(currentLang === 'en' ? 
+                    'Logged out successfully!' : 
+                    'Umetoka kwa mafanikio!');
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+        
+        function socialLogin(provider) {
+            alert(currentLang === 'en' ? 
+                `${provider} login will be integrated with your authentication system` : 
+                `Kuingia kwa ${provider} kutaunganishwa na mfumo wako wa uthibitishaji`);
+        }
+
+        // Language Toggle
+        let currentLang = 'en';
+        
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'sw' : 'en';
+            updateLanguage();
+            
+            const langText = document.getElementById('currentLangText');
+            if (langText) {
+                langText.textContent = currentLang === 'en' ? 'English' : 'Kiswahili';
+            }
+        }
+        
+        function updateLanguage() {
+            const elements = document.querySelectorAll('[data-en][data-sw]');
+            elements.forEach(el => {
+                const text = el.getAttribute('data-' + currentLang);
+                if (text) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = text;
+                    } else if (el.tagName === 'OPTION') {
+                        el.textContent = text;
+                    } else {
+                        if (el.children.length === 0) {
+                            el.textContent = text;
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.querySelector('.menu-toggle');
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        }
+        
+        // Hide header on scroll down (mobile only)
+        let lastScrollTop = 0;
+        const header = document.querySelector('header');
+        let scrollTimeout;
+        
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 768) {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                clearTimeout(scrollTimeout);
+                
+                scrollTimeout = setTimeout(() => {
+                    if (scrollTop > lastScrollTop && scrollTop > 100) {
+                        header.classList.add('hide-mobile');
+                    } else {
+                        header.classList.remove('hide-mobile');
+                    }
+                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                }, 10);
+            } else {
+                header.classList.remove('hide-mobile');
+            }
+        });
+        
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#portal') {
+                    return;
+                }
+                
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+        
+        // Cargo Tracking Function
+        async function trackCargo() {
+            const trackingNumber = document.getElementById('trackingNumber').value.trim();
+            const trackingResult = document.getElementById('trackingResult');
+            
+            if (trackingNumber === '') {
+                alert(currentLang === 'en' ? 'Please enter a tracking number' : 'Tafadhali ingiza nambari ya ufuatiliaji');
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase
+                    .from('shipments')
+                    .select('*')
+                    .eq('tracking_number', trackingNumber)
+                    .single();
+                
+                if (error) throw error;
+                
+                trackingResult.style.display = 'block';
+                trackingResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                
+            } catch (error) {
+                alert(currentLang === 'en' ? 
+                    'Tracking number not found' : 
+                    'Nambari ya ufuatiliaji haipatikani');
+                trackingResult.style.display = 'none';
+            }
+        }
+        
+        document.getElementById('trackingNumber').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                trackCargo();
+            }
+        });
+        
+        // Quote Form Submission
+        async function submitQuote(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: event.target[0].value,
+                company: event.target[1].value,
+                email: event.target[2].value,
+                phone: event.target[3].value,
+                cargo_type: event.target[4].value,
+                weight: parseFloat(event.target[5].value),
+                description: event.target[6].value,
+                status: 'pending'
+            };
+            
+            try {
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                submitBtn.disabled = true;
+                
+                if (typeof supabase !== 'undefined') {
+                    const { data, error } = await supabase
+                        .from('quotes')
+                        .insert([formData]);
+                    
+                    if (error) throw error;
+                }
+                
+                await emailjs.send(
+                    'YOUR_SERVICE_ID',
+                    'YOUR_TEAM_TEMPLATE_ID',
+                    {
+                        from_name: formData.name,
+                        from_email: formData.email,
+                        phone: formData.phone,
+                        company: formData.company || 'Not provided',
+                        cargo_type: formData.cargo_type,
+                        weight: formData.weight,
+                        description: formData.description || 'No description',
+                        request_date: new Date().toLocaleString()
+                    }
+                );
+                
+                await emailjs.send(
+                    'YOUR_SERVICE_ID',
+                    'YOUR_CUSTOMER_TEMPLATE_ID',
+                    {
+                        from_name: formData.name,
+                        from_email: formData.email,
+                        phone: formData.phone,
+                        cargo_type: formData.cargo_type,
+                        weight: formData.weight
+                    }
+                );
+                
+                document.getElementById('successMessage').style.display = 'block';
+                event.target.reset();
+                
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+                
+            } catch (error) {
+                const submitBtn = event.target.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span data-en="Submit Request" data-sw="Wasilisha Ombi">Submit Request</span>';
+                    submitBtn.disabled = false;
+                }
+                
+                alert(currentLang === 'en' ? 
+                    'Error submitting quote request. Please try again.' : 
+                    'Hitilafu kuwasilisha ombi la bei. Tafadhali jaribu tena.');
+                console.error('Quote submission error:', error);
+            }
+            
+            return false;
+        }
+        
+        // Intersection Observer for Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.service-card, .flow-step, .testimonial-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+        
+        // Active Navigation Highlighting
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.style.color = '';
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.style.color = 'var(--accent)';
+                }
+            });
+        });
+    </script>
+</body>
+</html></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Signup Form -->
+                <div class="portal-content" id="signupContent">
+                    <form class="portal-form" onsubmit="handleSignup(event)">
+                        <div class="form-group">
+                            <label data-en="Full Name" data-sw="Jina Kamili">Full Name</label>
+                            <input type="text" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Email Address" data-sw="Barua Pepe">Email Address</label>
+                            <input type="email" required placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Phone Number" data-sw="Nambari ya Simu">Phone Number</label>
+                            <input type="tel" required placeholder="+255 123 456 789">
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Password" data-sw="Nywila">Password</label>
+                            <input type="password" required placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> <span data-en="Create Account" data-sw="Fungua Akaunti">Create Account</span>
+                        </button>
+                    </form>
+
+                    <div class="portal-divider" data-en="or sign up with" data-sw="au jisajili na">or sign up with</div>
+
+                    <div class="social-login">
+                        <button class="social-btn google" onclick="socialLogin('google')">
+                            <i class="fab fa-google"></i>
+                        </button>
+                        <button class="social-btn facebook" onclick="socialLogin('facebook')">
+                            <i class="fab fa-facebook-f {
+                width: 100%;
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(255,255,255,0.2);
+            }
+            
+            .mobile-lang-btn {
+                width: 100%;
+                background: var(--primary);
+                color: var(--white);
+                border: none;
+                padding: 1rem;
+                border-radius: 10px;
+                font-size: 1rem;
+                font-weight: bold;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                transition: all 0.3s;
+            }
+            
+            .mobile-lang-btn:hover {
+                background: var(--accent);
+                transform: translateX(5px);
+            }
+            
+            .mobile-lang-btn i:first-child {
+                font-size: 1.2rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-arrow {
+                display: none;
+            }
+
+            .tracking-input {
+                flex-direction: column;
+            }
+            
+            .mobile-lang-item
