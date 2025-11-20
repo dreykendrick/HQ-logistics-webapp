@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="HQ Logistics - Reliable cargo transport from Dar es Salaam port to dry port. Track your shipment, request quotes, and experience trusted logistics services in Tanzania.">
     <title>HQ Logistics | A Partner You Can Trust</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- EmailJS Library -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <!-- Supabase Client -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
@@ -19,558 +19,820 @@
 
         :root {
             --primary: #800020;
-            --secondary: #1a1a1a;
+            --secondary: #0a0a0a;
             --accent: #a81c3f;
-            --light: #f5f5f5;
+            --light: #fafafa;
             --white: #ffffff;
-            --gray: #666;
+            --gray: #64748b;
+            --dark-gray: #1e293b;
+            --success: #10b981;
+            --error: #ef4444;
+            
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
             color: var(--secondary);
             overflow-x: hidden;
+            background: var(--white);
         }
 
-        /* Header & Navigation */
-        header {
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease-in-out;
+        html {
+            scroll-behavior: smooth;
         }
-        
-        header.hide-mobile {
-            transform: translateY(-100%);
+
+        /* Updated Header - Glassy Floating Effect */
+        header {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: var(--space-4) 0;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1400px;
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header.scrolled {
+            padding: var(--space-3) 0;
+            top: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
         }
 
         nav {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
+            padding: 0 var(--space-8);
         }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        /* Larger Logo */
+        .logo img {
+            height: 70px;
+            width: auto;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
         }
 
-        .logo i {
-            color: var(--primary);
-            background: var(--white);
-            padding: 0.5rem;
-            border-radius: 8px;
+        header.scrolled .logo img {
+            height: 70px;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 4px 12px rgba(128, 0, 32, 0.4));
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: var(--space-6);
             align-items: center;
         }
 
         .nav-links a {
-            color: var(--white);
+            color: rgba(255, 255, 255, 0.95);
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
             position: relative;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .nav-links a:hover {
-            color: var(--accent);
+            color: var(--primary);
+            text-shadow: 0 2px 8px rgba(128, 0, 32, 0.5);
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
+        .nav-actions {
+            display: flex;
+            gap: var(--space-4);
+            align-items: center;
         }
 
         .lang-toggle {
-            background: var(--white);
-            color: var(--primary);
-            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            padding: var(--space-2) var(--space-6);
             border-radius: 20px;
-            cursor: pointer;
-            font-weight: bold;
             border: none;
-            transition: transform 0.3s;
-            font-size: 0.9rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(128, 0, 32, 0.3);
         }
 
         .lang-toggle:hover {
-            transform: scale(1.05);
-            background: var(--primary);
-            color: var(--white);
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(128, 0, 32, 0.4);
         }
 
         .menu-toggle {
             display: none;
             flex-direction: column;
-            cursor: pointer;
             gap: 5px;
-            z-index: 1001;
+            cursor: pointer;
         }
 
         .menu-toggle span {
             width: 25px;
-            height: 3px;
-            background: var(--white);
-            border-radius: 3px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
             transition: 0.3s;
-        }
-        
-        .menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-        
-        .menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-        
-        .menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -7px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* Main Content Wrapper */
-        .main-content {
-            display: block;
-        }
-
-        .main-content.hidden {
-            display: none;
-        }
-
-        /* Hero Section */
+        /* Hero Section with Slider */
         .hero {
-            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(128, 0, 32, 0.95) 100%), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23333" width="1200" height="600"/><path fill="%23444" d="M0 300L50 280L100 320L150 290L200 310L250 285L300 305L350 295L400 315L450 280L500 300L550 290L600 310L650 285L700 305L750 295L800 315L850 280L900 300L950 290L1000 310L1050 285L1100 305L1150 295L1200 315V600H0Z"/></svg>');
-            background-size: cover;
-            background-position: center;
-            padding: 8rem 2rem;
-            text-align: center;
-            color: var(--white);
             position: relative;
+            height: 100vh;
+            min-height: 600px;
+            overflow: hidden;
+            margin-top: 0;
+        }
+
+        .hero-slider {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.8) 0%, rgba(128, 0, 32, 0.7) 100%);
+            z-index: 1;
         }
 
         .hero-content {
-            max-width: 800px;
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: var(--space-8);
+            max-width: 900px;
             margin: 0 auto;
-            animation: fadeInUp 1s ease-out;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            margin-bottom: var(--space-6);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
         }
 
         .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            margin-bottom: var(--space-8);
+            opacity: 0.9;
+            line-height: 1.7;
         }
 
-        .cta-buttons {
+        .cta-group {
             display: flex;
-            gap: 1rem;
+            gap: var(--space-4);
             justify-content: center;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 1rem 2rem;
+            padding: var(--space-4) var(--space-8);
             border: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-size: 1rem;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-family: inherit;
         }
 
         .btn-primary {
             background: var(--primary);
-            color: var(--white);
-            box-shadow: 0 4px 15px rgba(128, 0, 32, 0.3);
+            color: white;
+            box-shadow: 0 4px 14px rgba(128, 0, 32, 0.4);
         }
 
         .btn-primary:hover {
             background: var(--accent);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(128, 0, 32, 0.4);
+            box-shadow: 0 6px 20px rgba(128, 0, 32, 0.5);
         }
 
         .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            border: 2px solid var(--white);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background: var(--white);
-            color: var(--primary);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            gap: 12px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .slider-dot.active {
+            background: white;
+            width: 40px;
+            border-radius: 6px;
+        }
+
+        /* Section Styles */
+        section {
+            padding: clamp(4rem, 10vw, 8rem) var(--space-8);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-16);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: var(--space-4);
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: clamp(1rem, 2vw, 1.125rem);
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
         }
 
         /* Tracking Section */
         .tracking-section {
             background: var(--light);
-            padding: 4rem 2rem;
-            text-align: center;
         }
 
-        .section-title {
-            font-size: 2.5rem;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-        }
-
-        .section-subtitle {
-            color: var(--gray);
-            margin-bottom: 3rem;
-            font-size: 1.1rem;
+        .tracking-container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .tracking-box {
-            max-width: 600px;
-            margin: 0 auto;
             background: var(--white);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: var(--space-8);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
         }
 
-        .tracking-input {
+        .tracking-input-wrapper {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: var(--space-4);
+            margin-bottom: var(--space-8);
         }
 
-        .tracking-input input {
+        .tracking-input-wrapper input {
             flex: 1;
-            padding: 1rem;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: var(--space-4);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             font-size: 1rem;
-            transition: border 0.3s;
+            transition: all 0.3s;
+            background: var(--light);
         }
 
-        .tracking-input input:focus {
+        .tracking-input-wrapper input:focus {
             outline: none;
             border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(128, 0, 32, 0.1);
         }
 
-        .tracking-result {
+        .tracking-timeline {
             display: none;
-            text-align: left;
-            padding: 1.5rem;
-            background: var(--light);
-            border-radius: 10px;
+            position: relative;
+            padding-top: var(--space-4);
+        }
+
+        .tracking-timeline.show {
+            display: block;
             animation: fadeIn 0.5s;
         }
 
-        .status-item {
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .timeline-progress-bar {
+            position: absolute;
+            left: 24px;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: #e2e8f0;
+            border-radius: 2px;
+        }
+
+        .timeline-progress-fill {
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            border-radius: 2px;
+            transition: height 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 70px;
+            padding-bottom: var(--space-8);
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 4px solid #e2e8f0;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            background: var(--white);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--gray);
+            transition: all 0.3s;
         }
 
-        .status-item i {
+        .timeline-item.completed .timeline-icon {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .timeline-item.active .timeline-icon {
+            border-color: var(--primary);
             color: var(--primary);
-            font-size: 1.5rem;
+            animation: pulse 2s infinite;
         }
 
-        /* Services Section */
-        .services {
-            padding: 5rem 2rem;
-            background: var(--white);
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(128, 0, 32, 0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(128, 0, 32, 0); }
         }
 
-        .services-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
+        .timeline-content h4 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: var(--space-2);
         }
 
+        .timeline-content p {
+            color: var(--gray);
+            margin-bottom: var(--space-2);
+        }
+
+        .timeline-content small {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        /* Services Grid */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            gap: var(--space-8);
+            margin-bottom: var(--space-8);
         }
 
         .service-card {
             background: var(--light);
-            padding: 2rem;
-            border-radius: 15px;
+            padding: var(--space-8);
+            border-radius: 20px;
             transition: all 0.3s;
             cursor: pointer;
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(128, 0, 32, 0.2);
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: var(--white);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            background: white;
         }
 
-        .service-card i {
-            font-size: 3rem;
+        .service-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(128, 0, 32, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-6);
+            transition: all 0.3s;
+        }
+
+        .service-card:hover .service-icon {
+            background: var(--primary);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .service-icon i {
+            font-size: 2rem;
             color: var(--primary);
-            margin-bottom: 1rem;
             transition: color 0.3s;
         }
 
-        .service-card:hover i {
-            color: var(--white);
+        .service-card:hover .service-icon i {
+            color: white;
         }
 
         .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--space-3);
         }
 
-        /* Interactive Map */
-        .logistics-flow {
-            background: var(--secondary);
-            color: var(--white);
-            padding: 5rem 2rem;
+        .service-card p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .services-cta {
             text-align: center;
         }
 
-        .flow-container {
-            max-width: 1200px;
-            margin: 3rem auto 0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem;
+        /* How It Works Section */
+        .how-it-works {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1a1a1a 100%);
+            color: white;
+        }
+
+        .flow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-12);
         }
 
         .flow-step {
-            flex: 1;
-            min-width: 200px;
-            position: relative;
-            animation: fadeInUp 0.8s ease-out;
+            text-align: center;
         }
 
-        .flow-icon {
-            width: 100px;
-            height: 100px;
-            background: var(--primary);
+        .flow-number {
+            width: 80px;
+            height: 80px;
+            background: rgba(128, 0, 32, 0.2);
+            border: 3px solid var(--primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 2.5rem;
-            box-shadow: 0 10px 30px rgba(128, 0, 32, 0.3);
+            margin: 0 auto var(--space-6);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
             transition: all 0.3s;
         }
 
-        .flow-step:hover .flow-icon {
-            transform: scale(1.1) rotate(5deg);
-            background: var(--accent);
+        .flow-step:hover .flow-number {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
         }
 
-        .flow-arrow {
-            position: absolute;
-            right: -2rem;
-            top: 45px;
-            font-size: 2rem;
-            color: var(--primary);
+        .flow-step h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--space-3);
         }
 
-        .flow-step:last-child .flow-arrow {
-            display: none;
+        .flow-step p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
         }
 
-        /* Quote Form */
-        .quote-section {
-            padding: 5rem 2rem;
-            background: var(--light);
-        }
-
-        .quote-form {
-            max-width: 700px;
-            margin: 3rem auto 0;
+        /* News/Blog Section */
+        .news-section {
             background: var(--white);
-            padding: 3rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-8);
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
+        .news-card {
+            background: var(--light);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .news-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: var(--space-6);
+        }
+
+        .news-date {
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: var(--space-2);
+        }
+
+        .news-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--space-3);
             color: var(--secondary);
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border 0.3s;
+        .news-card p {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: var(--space-4);
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
+        .read-more {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            transition: all 0.3s;
         }
 
-        .form-row {
+        .read-more:hover {
+            gap: var(--space-3);
+        }
+
+        /* Jobs Section */
+        .jobs-section {
+            background: var(--light);
+        }
+
+        .jobs-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: var(--space-6);
+        }
+
+        .job-card {
+            background: var(--white);
+            padding: var(--space-8);
+            border-radius: 20px;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-6);
+            flex-wrap: wrap;
+        }
+
+        .job-card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateX(8px);
+        }
+
+        .job-info {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .job-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+            color: var(--secondary);
+        }
+
+        .job-meta {
+            display: flex;
+            gap: var(--space-6);
+            margin-bottom: var(--space-3);
+            flex-wrap: wrap;
+        }
+
+        .job-meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            color: var(--gray);
+            font-size: 0.9375rem;
+        }
+
+        .job-meta-item i {
+            color: var(--primary);
+        }
+
+        .job-description {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .job-action {
+            flex-shrink: 0;
         }
 
         /* Testimonials */
-        .testimonials {
-            padding: 5rem 2rem;
-            background: var(--white);
-        }
-
-        .testimonials-container {
-            max-width: 1200px;
-            margin: 3rem auto 0;
+        .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-8);
         }
 
         .testimonial-card {
             background: var(--light);
-            padding: 2rem;
-            border-radius: 15px;
-            position: relative;
-            transition: transform 0.3s;
+            padding: var(--space-8);
+            border-radius: 20px;
+            transition: all 0.3s;
         }
 
         .testimonial-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            background: white;
         }
 
-        .testimonial-card::before {
-            content: '"';
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            font-size: 5rem;
-            color: var(--primary);
-            opacity: 0.2;
+        .testimonial-rating {
+            color: #fbbf24;
+            margin-bottom: var(--space-4);
+            font-size: 1.125rem;
         }
 
-        .testimonial-content {
-            font-style: italic;
-            margin-bottom: 1rem;
+        .testimonial-text {
             color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: var(--space-6);
         }
 
         .testimonial-author {
-            font-weight: bold;
+            font-weight: 700;
             color: var(--secondary);
+        }
+
+        .testimonial-role {
+            font-size: 0.875rem;
+            color: var(--gray);
         }
 
         /* Contact Section */
         .contact-section {
-            padding: 5rem 2rem;
             background: var(--secondary);
-            color: var(--white);
+            color: white;
         }
 
-        .contact-container {
-            max-width: 1200px;
-            margin: 3rem auto 0;
+        .contact-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-8);
         }
 
         .contact-item {
             display: flex;
-            gap: 1rem;
-            align-items: start;
+            gap: var(--space-4);
+            padding: var(--space-6);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.3s;
         }
 
-        .contact-item i {
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(8px);
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.5rem;
-            color: var(--primary);
-            margin-top: 0.2rem;
+            flex-shrink: 0;
         }
 
-        .map-container {
-            height: 400px;
-            background: var(--light);
-            border-radius: 15px;
-            overflow: hidden;
+        .contact-info h4 {
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+        }
+
+        .contact-info p {
+            color: rgba(255, 255, 255, 0.7);
         }
 
         /* Footer */
         footer {
-            background: #0a0a0a;
-            color: var(--white);
-            padding: 3rem 2rem 1rem;
-            text-align: center;
+            background: #000;
+            color: white;
+            padding: var(--space-16) var(--space-8) var(--space-8);
         }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
+        .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            text-align: left;
-            margin-bottom: 2rem;
+            gap: var(--space-12);
+            margin-bottom: var(--space-12);
         }
 
-        .footer-section h3 {
+        .footer-section h4 {
+            font-weight: 700;
+            margin-bottom: var(--space-4);
             color: var(--primary);
-            margin-bottom: 1rem;
         }
 
         .footer-section ul {
@@ -578,31 +840,30 @@
         }
 
         .footer-section ul li {
-            margin-bottom: 0.5rem;
+            margin-bottom: var(--space-3);
         }
 
         .footer-section a {
-            color: var(--white);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
-            opacity: 0.8;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
         }
 
         .footer-section a:hover {
-            opacity: 1;
-            color: var(--primary);
+            color: white;
+            padding-left: var(--space-2);
         }
 
         .social-links {
             display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+            gap: var(--space-3);
+            margin-top: var(--space-4);
         }
 
-        .social-links a {
+        .social-link {
             width: 40px;
             height: 40px;
-            background: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -610,566 +871,342 @@
             transition: all 0.3s;
         }
 
-        .social-links a:hover {
-            background: var(--accent);
-            transform: translateY(-3px);
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-4px);
         }
 
         .copyright {
-            border-top: 1px solid #333;
-            padding-top: 1rem;
-            opacity: 0.7;
-        }
-
-        /* Client Portal as Full Page */
-        .portal-page {
-            display: none;
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--light) 0%, #e8e8e8 100%);
-            padding: 6rem 2rem 4rem;
-        }
-
-        .portal-page.active {
-            display: block;
-        }
-
-        .portal-container {
-            background: var(--white);
-            border-radius: 20px;
-            max-width: 420px;
-            width: 90%;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-            animation: slideUp 0.4s ease-out;
-        }
-
-        .portal-form {
-            padding: 0 1rem;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .back-to-home {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: bold;
-            margin-bottom: 2rem;
-            padding: 0.8rem 1.5rem;
-            border-radius: 10px;
-            background: var(--white);
-            transition: all 0.3s;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .back-to-home:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateX(-5px);
-        }
-
-        .portal-header {
             text-align: center;
-            margin-bottom: 1.5rem;
+            padding-top: var(--space-8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
         }
 
-        .portal-header i {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .portal-header h2 {
-            color: var(--secondary);
-            margin-bottom: 0.3rem;
-            font-size: 1.8rem;
-        }
-
-        .portal-header p {
-            color: var(--gray);
-            font-size: 0.85rem;
-        }
-
-        .portal-tabs {
+        /* Floating Action Buttons */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--light);
+            flex-direction: column;
+            gap: var(--space-3);
+            z-index: 999;
         }
 
-        .portal-tab {
-            flex: 1;
-            padding: 0.8rem;
-            border: none;
-            background: none;
-            font-size: 0.95rem;
-            font-weight: bold;
-            color: var(--gray);
-            cursor: pointer;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-
-        .portal-tab.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
-        .portal-content {
-            display: none;
-        }
-
-        .portal-content.active {
-            display: block;
-            animation: fadeIn 0.3s;
-        }
-
-        .portal-form .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .portal-form label {
-            display: block;
-            margin-bottom: 0.4rem;
-            font-weight: 600;
-            color: var(--secondary);
-            font-size: 0.85rem;
-        }
-
-        .portal-form input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: border 0.3s;
-        }
-
-        .portal-form input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .portal-form .btn {
-            width: 100%;
-            margin-top: 0.5rem;
-            padding: 0.85rem 2rem;
-            font-size: 0.95rem;
-        }
-
-        .forgot-password {
-            text-align: right;
-            margin-top: 0.3rem;
-        }
-
-        .forgot-password a {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.3s;
-        }
-
-        .forgot-password a:hover {
-            color: var(--accent);
-        }
-
-        .portal-divider {
-            display: flex;
-            align-items: center;
-            margin: 1.2rem 0;
-            color: var(--gray);
-            font-size: 0.85rem;
-        }
-
-        .portal-divider::before,
-        .portal-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e0e0e0;
-        }
-
-        .portal-divider::before {
-            margin-right: 1rem;
-        }
-
-        .portal-divider::after {
-            margin-left: 1rem;
-        }
-
-        .social-login {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-btn {
-            flex: 1;
-            padding: 0.9rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            background: var(--white);
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s;
+        .fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .social-btn:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .social-btn i {
             font-size: 1.5rem;
-        }
-
-        .social-btn.google {
-            color: #DB4437;
-        }
-
-        .social-btn.facebook {
-            color: #4267B2;
-        }
-
-        /* Dashboard Styles */
-        .dashboard-container {
-            display: none;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0;
-        }
-
-        .dashboard-container.active {
-            display: block;
-        }
-
-        .portal-page .dashboard-container {
-            max-width: 1100px;
-        }
-
-        .dashboard-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .dashboard-header h2 {
-            color: var(--secondary);
-            margin-bottom: 0.3rem;
-            font-size: 1.8rem;
-        }
-
-        .user-info {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: var(--white);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .user-info i {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .user-info h3 {
-            margin-bottom: 0.2rem;
-            font-size: 1.3rem;
-        }
-
-        .user-info p {
-            font-size: 0.9rem;
-            opacity: 0.95;
-        }
-
-        .dashboard-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-card {
-            background: var(--white);
-            padding: 1.2rem;
-            border-radius: 12px;
-            text-align: center;
-            transition: transform 0.3s;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-        }
-
-        .stat-card i {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 0.4rem;
-        }
-
-        .stat-card h4 {
-            color: var(--secondary);
-            margin-bottom: 0.2rem;
-            font-size: 0.9rem;
-        }
-
-        .stat-card p {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        .shipment-list {
-            background: var(--white);
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-
-        .shipment-list h3 {
-            margin-bottom: 1rem;
-            color: var(--secondary);
-            font-size: 1.2rem;
-        }
-
-        .shipment-item {
-            background: var(--light);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 0.8rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            transition: all 0.3s;
-        }
-
-        .shipment-item:hover {
-            background: #e8e8e8;
-            transform: translateX(5px);
-        }
-
-        .shipment-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .shipment-info h4 {
-            color: var(--secondary);
-            margin-bottom: 0.2rem;
-            font-size: 1rem;
-        }
-
-        .shipment-info p {
-            color: var(--gray);
-            font-size: 0.85rem;
-        }
-
-        .shipment-status {
-            padding: 0.4rem 0.9rem;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-
-        .status-transit {
-            background: #FFF3CD;
-            color: #856404;
-        }
-
-        .status-delivered {
-            background: #D4EDDA;
-            color: #155724;
-        }
-
-        .status-pending {
-            background: #F8D7DA;
-            color: #721C24;
-        }
-
-        .logout-btn {
-            background: var(--secondary);
-            color: var(--white);
-            border: none;
-            padding: 0.75rem 1.8rem;
-            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
             transition: all 0.3s;
-            display: block;
-            margin: 1.5rem auto 0;
-            font-size: 0.95rem;
+            box-shadow: var(--shadow-xl);
+            border: none;
+            text-decoration: none;
         }
 
-        .logout-btn:hover {
+        .fab-whatsapp {
+            background: #25d366;
+            color: white;
+        }
+
+        .fab-phone {
             background: var(--primary);
-            transform: translateY(-2px);
+            color: white;
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .fab-scroll {
+            background: var(--secondary);
+            color: white;
+            display: none;
         }
 
-        @keyframes fadeInUp {
+        .fab-scroll.show {
+            display: flex;
+        }
+
+        .fab:hover {
+            transform: translateY(-8px) scale(1.1);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            padding: var(--space-4) var(--space-6);
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            box-shadow: var(--shadow-xl);
+            z-index: 2000;
+            display: none;
+        }
+
+        .notification.show {
+            display: block;
+            animation: slideInRight 0.4s;
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        .notification.error {
+            background: var(--error);
+        }
+
+        @keyframes slideInRight {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateX(100px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateX(0);
             }
         }
 
-        /* Responsive Design */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
+            header {
+                width: calc(100% - 20px);
+                top: 10px;
+                border-radius: 16px;
+            }
+
+            header.scrolled {
+                top: 5px;
+            }
+
             .menu-toggle {
                 display: flex;
             }
 
+            .menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+
+            .logo img {
+                height: 60px;
+            }
+
+            header.scrolled .logo img {
+                height: 50px;
+            }
+
             .nav-links {
                 position: fixed;
-                top: 70px;
+                top: 90px;
                 left: -100%;
                 flex-direction: column;
-                background: var(--secondary);
-                width: 100%;
-                padding: 2rem;
+                background: rgba(10, 10, 10, 0.98);
+                backdrop-filter: blur(20px);
+                width: calc(100% - 20px);
+                margin: 0 10px;
+                padding: var(--space-8);
                 transition: left 0.3s;
-                box-shadow: 0 5px 10px rgba(0,0,0,0.3);
                 align-items: flex-start;
-                height: calc(100vh - 70px);
+                max-height: calc(100vh - 110px);
                 overflow-y: auto;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 16px;
             }
 
             .nav-links.active {
                 left: 0;
             }
-            
-            .lang-toggle {
-                display: none;
-            }
-            
-            .mobile-lang-item {
-                display: block;
-            }
-        }
-        
-        @media (min-width: 769px) {
-            .mobile-lang-item {
-                display: none;
-            }
-        }
 
-        .success-message {
-            background: #4CAF50;
-            color: white;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            display: none;
-            animation: fadeIn 0.5s;
+            .cta-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .tracking-input-wrapper {
+                flex-direction: column;
+            }
+
+            .job-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+        <a href="https://wa.me/255XXXXXXXXX" class="fab fab-whatsapp" aria-label="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="tel:+255XXXXXXXXX" class="fab fab-phone" aria-label="Call">
+            <i class="fas fa-phone"></i>
+        </a>
+        <button class="fab fab-scroll" id="scrollTop" onclick="scrollToTop()" aria-label="Scroll to top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
     <!-- Header -->
-    <header>
+    <header id="header">
         <nav>
-            <div class="logo">
-                <i class="fas fa-truck-moving"></i>
-                <span>HQ LOGISTICS</span>
+            <div class="logo" onclick="scrollToTop()">
+                <img src="image/image 8.png" alt="HQ Logistics Logo">
             </div>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#home" data-en="Home" data-sw="Nyumbani">Home</a></li>
-                <li><a href="#services" data-en="Services" data-sw="Huduma">Services</a></li>
-                <li><a href="#tracking" data-en="Track Cargo" data-sw="Fuatilia Mizigo">Track Cargo</a></li>
-                <li><a href="#quote" data-en="Get Quote" data-sw="Omba Bei">Get Quote</a></li>
-                <li><a href="#contact" data-en="Contact" data-sw="Wasiliana">Contact</a></li>
-                <li><a href="#portal" onclick="showPortalPage(event)" data-en="Client Portal" data-sw="Kituo cha Mteja"><i class="fas fa-user-circle"></i> Client Portal</a></li>
-                <li class="mobile-lang-item">
-                    <button class="mobile-lang-btn" onclick="toggleLanguage()">
-                        <i class="fas fa-globe"></i>
-                        <span id="currentLangText">English</span>
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
+                <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
+                <li><a href="#tracking" onclick="scrollToSection('tracking')">Track Cargo</a></li>
+                <li><a href="#services" onclick="scrollToSection('services')">Services</a></li>
+                <li><a href="#news" onclick="scrollToSection('news')">News</a></li>
+                <li><a href="#jobs" onclick="scrollToSection('jobs')">Careers</a></li>
+                <li><a href="#contact" onclick="scrollToSection('contact')">Contact</a></li>
+                <li>
+                    <button class="lang-toggle" onclick="toggleLanguage()">EN / SW</button>
                 </li>
             </ul>
-            <button class="lang-toggle" onclick="toggleLanguage()">EN / SW</button>
-            <div class="menu-toggle" onclick="toggleMenu()">
+            <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+            </button>
         </nav>
     </header>
 
-    <!-- Main Content Wrapper -->
-    <div class="main-content" id="mainContent">
-
-    <!-- Hero Section -->
+    <!-- Hero Section with Slider -->
     <section class="hero" id="home">
-        <div class="hero-content">
-            <h1 data-en="A Partner You Can Trust" data-sw="Mshirika Unayeweza Kumwamini">A Partner You Can Trust</h1>
-            <p data-en="Reliable cargo transport from Dar es Salaam port to dry port. Fast, secure, and efficient logistics solutions for your business." data-sw="Usafirishaji wa mizigo wa kuaminika kutoka bandari ya Dar es Salaam hadi bandari kavu. Suluhisho la haraka, salama na la ufanisi kwa biashara yako.">Reliable cargo transport from Dar es Salaam port to dry port. Fast, secure, and efficient logistics solutions for your business.</p>
-            <div class="cta-buttons">
-                <a href="#quote" class="btn btn-primary" data-en="Get a Quote" data-sw="Omba Bei">Get a Quote</a>
-                <a href="#tracking" class="btn btn-secondary" data-en="Track Your Cargo" data-sw="Fuatilia Mizigo Yako">Track Your Cargo</a>
+        <div class="hero-slider">
+            <div class="hero-slide active">
+                <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=1920&q=80" alt="Port logistics">
             </div>
+            <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80" alt="Cargo transport">
+            </div>
+            <div class="hero-slide">
+                <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1920&q=80" alt="Warehouse">
+            </div>
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>A Partner You Can Trust</h1>
+            <p>Fast, secure, and efficient cargo transport from Dar es Salaam port to dry port. Real-time tracking and professional handling for your peace of mind.</p>
+            <div class="cta-group">
+                <a href="#tracking" onclick="scrollToSection('tracking')" class="btn btn-primary">
+                    <i class="fas fa-search-location"></i>
+                    Track Cargo
+                </a>
+                <a href="#contact" onclick="scrollToSection('contact')" class="btn btn-secondary">
+                    <i class="fas fa-phone"></i>
+                    Contact Us
+                </a>
+            </div>
+        </div>
+        <div class="slider-controls">
+            <span class="slider-dot active" onclick="goToSlide(0)"></span>
+            <span class="slider-dot" onclick="goToSlide(1)"></span>
+            <span class="slider-dot" onclick="goToSlide(2)"></span>
         </div>
     </section>
 
     <!-- Tracking Section -->
     <section class="tracking-section" id="tracking">
-        <h2 class="section-title" data-en="Track Your Cargo" data-sw="Fuatilia Mizigo Yako">Track Your Cargo</h2>
-        <p class="section-subtitle" data-en="Enter your tracking number to check shipment status in real-time" data-sw="Ingiza nambari yako ya ufuatiliaji ili kuangalia hali ya usafirishaji kwa wakati halisi">Enter your tracking number to check shipment status in real-time</p>
-        
-        <div class="tracking-box">
-            <div class="tracking-input">
-                <input type="text" id="trackingNumber" placeholder="Enter tracking number (e.g., HQ123456)">
-                <button class="btn btn-primary" onclick="trackCargo()"><i class="fas fa-search"></i> <span data-en="Track" data-sw="Fuatilia">Track</span></button>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Track Your Cargo</h2>
+                <p class="section-subtitle">Enter your tracking number for instant shipment status</p>
             </div>
-            
-            <div class="tracking-result" id="trackingResult">
-                <div class="status-item">
-                    <i class="fas fa-check-circle"></i>
-                    <div>
-                        <strong data-en="Cargo Received at Port" data-sw="Mizigo Imepokelewa Bandari">Cargo Received at Port</strong>
-                        <p data-en="Your cargo has been received at Dar es Salaam Port" data-sw="Mizigo yako imepokelewa kwenye Bandari ya Dar es Salaam">Your cargo has been received at Dar es Salaam Port</p>
+
+            <div class="tracking-container">
+                <div class="tracking-box">
+                    <div class="tracking-input-wrapper">
+                        <input type="text" id="trackingNumber" placeholder="Enter tracking number (e.g., HQ123456)">
+                        <button class="btn btn-primary" onclick="trackCargo()">
+                            <i class="fas fa-search"></i>
+                            Track
+                        </button>
                     </div>
-                </div>
-                <div class="status-item">
-                    <i class="fas fa-truck"></i>
-                    <div>
-                        <strong data-en="In Transit" data-sw="Njiani">In Transit</strong>
-                        <p data-en="Cargo is currently being transported to the dry port" data-sw="Mizigo inasafirishwa kwa sasa hadi bandari kavu">Cargo is currently being transported to the dry port</p>
-                    </div>
-                </div>
-                <div class="status-item">
-                    <i class="fas fa-warehouse"></i>
-                    <div>
-                        <strong data-en="Arrived at Dry Port" data-sw="Imefika Bandari Kavu">Arrived at Dry Port</strong>
-                        <p data-en="Ready for collection" data-sw="Iko tayari kuchukuliwa">Ready for collection</p>
+
+                    <div class="tracking-timeline" id="trackingResult">
+                        <div class="timeline-progress-bar">
+                            <div class="timeline-progress-fill" id="progressFill"></div>
+                        </div>
+
+                        <div class="timeline-item completed">
+                            <div class="timeline-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Cargo Received at Port</h4>
+                                <p>Your cargo has been received at Dar es Salaam Port</p>
+                                <small>Nov 15, 2025 - 08:30 AM</small>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item completed">
+                            <div class="timeline-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Documentation Complete</h4>
+                                <p>All customs documentation processed successfully</p>
+                                <small>Nov 16, 2025 - 02:15 PM</small>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item active">
+                            <div class="timeline-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>In Transit</h4>
+                                <p>Cargo is currently being transported to dry port</p>
+                                <small>Nov 17, 2025 - 06:00 AM</small>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="fas fa-warehouse"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>Ready for Collection</h4>
+                                <p>Cargo available for pickup at dry port</p>
+                                <small>Estimated: Nov 17, 2025 - 04:00 PM</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1178,164 +1215,293 @@
 
     <!-- Services Section -->
     <section class="services" id="services">
-        <div class="services-container">
-            <h2 class="section-title" data-en="Our Services" data-sw="Huduma Zetu">Our Services</h2>
-            <p class="section-subtitle" data-en="Comprehensive logistics solutions tailored to your needs" data-sw="Suluhisho kamili za usafirishaji zinazokidhi mahitaji yako">Comprehensive logistics solutions tailored to your needs</p>
-            
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Services</h2>
+                <p class="section-subtitle">Comprehensive logistics solutions designed for your success</p>
+            </div>
+
             <div class="services-grid">
                 <div class="service-card">
-                    <i class="fas fa-shipping-fast"></i>
-                    <h3 data-en="Port to Dry Port Transport" data-sw="Usafirishaji Bandari hadi Bandari Kavu">Port to Dry Port Transport</h3>
-                    <p data-en="Efficient cargo movement from Dar es Salaam port to dry port with real-time tracking" data-sw="Usogezaji wa mizigo wa ufanisi kutoka bandari ya Dar es Salaam hadi bandari kavu na ufuatiliaji wa wakati halisi">Efficient cargo movement from Dar es Salaam port to dry port with real-time tracking</p>
+                    <div class="service-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3>Port to Dry Port Transport</h3>
+                    <p>Efficient cargo movement with real-time GPS tracking and guaranteed delivery times.</p>
                 </div>
-                
+
                 <div class="service-card">
-                    <i class="fas fa-box"></i>
-                    <h3 data-en="Cargo Handling" data-sw="Ushughulikaji wa Mizigo">Cargo Handling</h3>
-                    <p data-en="Professional handling of all cargo types with specialized equipment and trained staff" data-sw="Ushughulikaji wa kitaalamu wa aina zote za mizigo kwa vifaa maalum na wafanyakazi waliofunzwa">Professional handling of all cargo types with specialized equipment and trained staff</p>
+                    <div class="service-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3>Cargo Handling</h3>
+                    <p>Professional handling with specialized equipment and trained staff for all cargo types.</p>
                 </div>
-                
+
                 <div class="service-card">
-                    <i class="fas fa-warehouse"></i>
-                    <h3 data-en="Warehousing & Storage" data-sw="Ghala na Uhifadhi">Warehousing & Storage</h3>
-                    <p data-en="Secure storage facilities at the dry port for short and long-term needs" data-sw="Vituo salama vya kuhifadhia kwenye bandari kavu kwa mahitaji ya muda mfupi na mrefu">Secure storage facilities at the dry port for short and long-term needs</p>
+                    <div class="service-icon">
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <h3>Warehousing & Storage</h3>
+                    <p>Secure facilities with 24/7 surveillance and climate control for your peace of mind.</p>
                 </div>
-                
+
                 <div class="service-card">
-                    <i class="fas fa-file-invoice"></i>
-                    <h3 data-en="Customs Clearance Support" data-sw="Msaada wa Forodha">Customs Clearance Support</h3>
-                    <p data-en="Expert assistance with customs documentation and clearance processes" data-sw="Usaidizi wa kitaalamu na nyaraka za forodha na michakato ya ufunguaji">Expert assistance with customs documentation and clearance processes</p>
+                    <div class="service-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <h3>Customs Clearance</h3>
+                    <p>Expert assistance to ensure smooth and fast processing of all documentation.</p>
+                </div>
+            </div>
+
+            <div class="services-cta">
+               <a href="services.html" class="btn btn-primary">
+                    <i class="fas fa-arrow-right"></i>
+                    View All Services
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" style="color: white;">How It Works</h2>
+                <p class="section-subtitle" style="color: rgba(255,255,255,0.7);">Four simple steps to deliver your cargo safely</p>
+            </div>
+
+            <div class="flow-grid">
+                <div class="flow-step">
+                    <div class="flow-number">1</div>
+                    <h3>Cargo Arrival</h3>
+                    <p>Your cargo arrives and is registered in our system immediately</p>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-number">2</div>
+                    <h3>Documentation</h3>
+                    <p>We handle all customs clearance and paperwork efficiently</p>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-number">3</div>
+                    <h3>Safe Transport</h3>
+                    <p>Secure transport with real-time GPS tracking to dry port</p>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-number">4</div>
+                    <h3>Ready to Collect</h3>
+                    <p>Instant notification when your cargo is ready for pickup</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Logistics Flow -->
-    <section class="logistics-flow">
-        <h2 class="section-title" data-en="How It Works" data-sw="Jinsi Inavyofanya Kazi">How It Works</h2>
-        <p class="section-subtitle" data-en="Our streamlined process from port to delivery" data-sw="Mchakato wetu uliobobea kutoka bandari hadi utoaji">Our streamlined process from port to delivery</p>
-        
-        <div class="flow-container">
-            <div class="flow-step">
-                <div class="flow-icon">
-                    <i class="fas fa-anchor"></i>
-                </div>
-                <h3 data-en="Cargo Arrival" data-sw="Kuwasili kwa Mizigo">Cargo Arrival</h3>
-                <p data-en="Your cargo arrives at Dar es Salaam port" data-sw="Mizigo yako inafika bandari ya Dar es Salaam">Your cargo arrives at Dar es Salaam port</p>
-                <i class="fas fa-arrow-right flow-arrow"></i>
+    <!-- News/Blog Section -->
+    <section class="news-section" id="news">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Latest News & Updates</h2>
+                <p class="section-subtitle">Stay informed with the latest from HQ Logistics</p>
             </div>
-            
-            <div class="flow-step">
-                <div class="flow-icon">
-                    <i class="fas fa-clipboard-check"></i>
+
+            <div class="news-grid">
+                <div class="news-card">
+                    <img src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600&q=80" alt="News" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">November 15, 2025</div>
+                        <h3>New Digital Tracking System Launched</h3>
+                        <p>We're excited to announce the launch of our enhanced real-time tracking system, providing even more visibility into your shipments.</p>
+                        <a href="news-detail.html" class="read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
-                <h3 data-en="Processing" data-sw="Usindikaji">Processing</h3>
-                <p data-en="We handle documentation and customs" data-sw="Tunashughulikia nyaraka na forodha">We handle documentation and customs</p>
-                <i class="fas fa-arrow-right flow-arrow"></i>
-            </div>
-            
-            <div class="flow-step">
-                <div class="flow-icon">
-                    <i class="fas fa-truck-loading"></i>
+
+                <div class="news-card">
+                    <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&q=80" alt="News" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">November 10, 2025</div>
+                        <h3>Expanding Our Fleet for Better Service</h3>
+                        <p>HQ Logistics invests in 20 new trucks to enhance delivery capacity and reduce transit times across Tanzania.</p>
+                        <a href="news-detail.html" class="read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
-                <h3 data-en="Transport" data-sw="Usafirishaji">Transport</h3>
-                <p data-en="Safe transport to dry port facility" data-sw="Usafirishaji salama hadi kituo cha bandari kavu">Safe transport to dry port facility</p>
-                <i class="fas fa-arrow-right flow-arrow"></i>
-            </div>
-            
-            <div class="flow-step">
-                <div class="flow-icon">
-                    <i class="fas fa-check-double"></i>
+
+                <div class="news-card">
+                    <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80" alt="News" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date">November 5, 2025</div>
+                        <h3>Partnership with Major Shipping Lines</h3>
+                        <p>New strategic partnerships enable us to offer more competitive rates and faster processing times at Dar es Salaam port.</p>
+                        <a href="news-detail.html" class="read-more">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
-                <h3 data-en="Collection" data-sw="Ukusanyaji">Collection</h3>
-                <p data-en="Ready for you to collect your cargo" data-sw="Iko tayari kwa ajili yako kuchukua mizigo yako">Ready for you to collect your cargo</p>
             </div>
         </div>
     </section>
 
-    <!-- Quote Section -->
-    <section class="quote-section" id="quote">
-        <div class="services-container">
-            <h2 class="section-title" data-en="Request a Quote" data-sw="Omba Bei">Request a Quote</h2>
-            <p class="section-subtitle" data-en="Fill out the form below and we'll get back to you within 24 hours" data-sw="Jaza fomu hapa chini na tutakurudishia jibu ndani ya masaa 24">Fill out the form below and we'll get back to you within 24 hours</p>
-            
-            <form class="quote-form" id="quoteForm" onsubmit="submitQuote(event)">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label data-en="Full Name" data-sw="Jina Kamili">Full Name *</label>
-                        <input type="text" required placeholder="John Doe">
+    <!-- Jobs Section -->
+    <section class="jobs-section" id="jobs">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Join Our Team</h2>
+                <p class="section-subtitle">Explore exciting career opportunities at HQ Logistics</p>
+            </div>
+
+            <div class="jobs-grid">
+                <div class="job-card">
+                    <div class="job-info">
+                        <h3 class="job-title">Logistics Coordinator</h3>
+                        <div class="job-meta">
+                            <div class="job-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Dar es Salaam
+                            </div>
+                            <div class="job-meta-item">
+                                <i class="fas fa-briefcase"></i>
+                                Full Time
+                            </div>
+                            <div class="job-meta-item">
+                                <i class="fas fa-clock"></i>
+                                Posted 2 days ago
+                            </div>
+                        </div>
+                        <p class="job-description">Seeking an experienced logistics coordinator to manage daily operations and ensure timely delivery of cargo shipments.</p>
                     </div>
-                    <div class="form-group">
-                        <label data-en="Company Name" data-sw="Jina la Kampuni">Company Name</label>
-                        <input type="text" placeholder="Your Company Ltd">
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label data-en="Email Address" data-sw="Barua Pepe">Email Address *</label>
-                        <input type="email" required placeholder="john@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label data-en="Phone Number" data-sw="Nambari ya Simu">Phone Number *</label>
-                        <input type="tel" required placeholder="+255 123 456 789">
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label data-en="Cargo Type" data-sw="Aina ya Mizigo">Cargo Type *</label>
-                        <select required>
-                            <option value="" data-en="Select cargo type" data-sw="Chagua aina ya mizigo">Select cargo type</option>
-                            <option value="general" data-en="General Cargo" data-sw="Mizigo ya Kawaida">General Cargo</option>
-                            <option value="container" data-en="Container" data-sw="Kontena">Container</option>
-                            <option value="heavy" data-en="Heavy Equipment" data-sw="Vifaa Vizito">Heavy Equipment</option>
-                            <option value="vehicle" data-en="Vehicles" data-sw="Magari">Vehicles</option>
-                            <option value="perishable" data-en="Perishable Goods" data-sw="Bidhaa Zinazoharibika">Perishable Goods</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label data-en="Weight (kg)" data-sw="Uzito (kg)">Weight (kg) *</label>
-                        <input type="number" required placeholder="1000">
+                    <div class="job-action">
+                        <a href="job-detail.html" class="btn btn-primary">Apply Now</a>
                     </div>
                 </div>
-                
-                <div class="form-group">
-                    <label data-en="Cargo Description" data-sw="Maelezo ya Mizigo">Cargo Description</label>
-                    <textarea rows="4" placeholder="Provide details about your cargo..."></textarea>
+
+                <div class="job-card">
+                    <div class="job-info">
+                        <h3 class="job-title">Warehouse Manager</h3>
+                        <div class="job-meta">
+                            <div class="job-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Dar es Salaam
+                            </div>
+                            <div class="job-meta-item">
+                                <i class="fas fa-briefcase"></i>
+                                Full Time
+                            </div>
+                            <div class="job-meta-item">
+                                <i class="fas fa-clock"></i>
+                                Posted 5 days ago
+                            </div>
+                        </div>
+                        <p class="job-description">Looking for a warehouse manager to oversee inventory management and supervise warehouse staff at our dry port facility.</p>
+                    </div>
+                    <div class="job-action">
+                        <a href="job-detail.html" class="btn btn-primary">Apply Now</a>
+                    </div>
                 </div>
-                
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fas fa-paper-plane"></i> <span data-en="Submit Request" data-sw="Wasilisha Ombi">Submit Request</span>
-                </button>
-                
-                <div class="success-message" id="successMessage">
-                    <i class="fas fa-check-circle"></i> <span data-en="Thank you! We'll contact you within 24 hours." data-sw="Asante! Tutawasiliana nawe ndani ya masaa 24.">Thank you! We'll contact you within 24 hours.</span>
+
+                <div class="job-card">
+                    <div class="job-info">
+                        <h3 class="job-title">Truck Driver</h3>
+                        <div class="job-meta">
+                            <div class="job-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Dar es Salaam
+                            </div>
+                            <div class="job-meta-item">
+                                <i class="fas fa-briefcase"></i>
+                                Full Time
+                            </div>
+                            <div class="job-meta-item">
+                                <i class="fas fa-clock"></i>
+                                Posted 1 week ago
+                            </div>
+                        </div>
+                        <p class="job-description">Professional truck drivers needed with valid licenses to transport cargo between port and dry port facilities.</p>
+                    </div>
+                    <div class="job-action">
+                        <a href="job-detail.html" class="btn btn-primary">Apply Now</a>
+                    </div>
                 </div>
-            </form>
+
+                <div class="job-card">
+                    <div class="job-info">
+                        <h3 class="job-title">Customs Clearance Officer</h3>
+                        <div class="job-meta">
+                            <div class="job-meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Dar es Salaam
+                            </div>
+                            <div class="job-meta-item">
+                                <i class="fas fa-briefcase"></i>
+                                Full Time
+                            </div>
+                            <div class="job-meta-item">
+                                <i class="fas fa-clock"></i>
+                                Posted 1 week ago
+                            </div>
+                        </div>
+                        <p class="job-description">Experienced customs officer needed to handle documentation and ensure smooth clearance of all cargo shipments.</p>
+                    </div>
+                    <div class="job-action">
+                        <a href="job-detail.html" class="btn btn-primary">Apply Now</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Testimonials -->
-    <section class="testimonials">
-        <div class="services-container">
-            <h2 class="section-title" data-en="What Our Clients Say" data-sw="Wateja Wetu Wanasema Nini">What Our Clients Say</h2>
-            <p class="section-subtitle" data-en="Trusted by businesses across Tanzania" data-sw="Wanaaminiwa na biashara kote Tanzania">Trusted by businesses across Tanzania</p>
-            
-            <div class="testimonials-container">
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What Our Clients Say</h2>
+                <p class="section-subtitle">Trusted by businesses across Tanzania</p>
+            </div>
+
+            <div class="testimonials-grid">
                 <div class="testimonial-card">
-                    <div class="testimonial-content" data-en="HQ Logistics has been our go-to partner for over 2 years. Their reliability and efficiency have helped us streamline our supply chain operations significantly." data-sw="HQ Logistics imekuwa mshirika wetu kwa zaidi ya miaka 2. Uaminifu na ufanisi wao umetusaidia kuboresha shughuli zetu za usambazaji kwa kiasi kikubwa.">HQ Logistics has been our go-to partner for over 2 years. Their reliability and efficiency have helped us streamline our supply chain operations significantly.</div>
-                    <div class="testimonial-author">- Sarah Mwangi, Import Manager</div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">HQ Logistics has transformed our supply chain. Their tracking system and professional service are exceptional.</p>
+                    <div class="testimonial-author">Sarah Mwangi</div>
+                    <div class="testimonial-role">Import Manager</div>
                 </div>
-                
+
                 <div class="testimonial-card">
-                    <div class="testimonial-content" data-en="The tracking system is excellent and gives us peace of mind. We always know where our cargo is. Fast turnaround times and professional service." data-sw="Mfumo wa ufuatiliaji ni bora sana na unatupatia utulivu wa akili. Tunajua kila wakati mizigo yetu ipo wapi. Muda wa haraka wa ukarabati na huduma ya kitaalamu.">The tracking system is excellent and gives us peace of mind. We always know where our cargo is. Fast turnaround times and professional service.</div>
-                    <div class="testimonial-author">- John Massawe, Logistics Coordinator</div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">Fast turnaround times and professional handling. The real-time tracking gives us complete peace of mind.</p>
+                    <div class="testimonial-author">John Massawe</div>
+                    <div class="testimonial-role">Logistics Coordinator</div>
                 </div>
-                
+
                 <div class="testimonial-card">
-                    <div class="testimonial-content" data-en="Professional team that understands the complexities of cargo handling. They've helped us navigate customs clearance smoothly every time." data-sw="Timu ya kitaalamu inayoelewa utata wa ushughulikaji wa mizigo. Wametusaidia kupitia ufunguaji wa forodha kwa urahisi kila wakati.">Professional team that understands the complexities of cargo handling. They've helped us navigate customs clearance smoothly every time.</div>
-                    <div class="testimonial-author">- Grace Kimaro, Supply Chain Director</div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">Outstanding service! They handle customs clearance smoothly every time. Highly professional team.</p>
+                    <div class="testimonial-author">Grace Kimaro</div>
+                    <div class="testimonial-role">Supply Chain Director</div>
                 </div>
             </div>
         </div>
@@ -1343,55 +1509,51 @@
 
     <!-- Contact Section -->
     <section class="contact-section" id="contact">
-        <div class="services-container">
-            <h2 class="section-title" data-en="Contact Us" data-sw="Wasiliana Nasi">Contact Us</h2>
-            <p class="section-subtitle" data-en="Get in touch with our team" data-sw="Wasiliana na timu yetu">Get in touch with our team</p>
-            
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-item">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" style="color: white;">Contact Us</h2>
+                <p class="section-subtitle" style="color: rgba(255,255,255,0.7);">We're here to help 24/7</p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">
                         <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h3 data-en="Main Office" data-sw="Ofisi Kuu">Main Office</h3>
-                            <p>Dar es Salaam Port Area<br>Tanzania</p>
-                        </div>
                     </div>
-                    
-                    <div class="contact-item">
-                        <i class="fas fa-warehouse"></i>
-                        <div>
-                            <h3 data-en="Dry Port Location" data-sw="Mahali pa Bandari Kavu">Dry Port Location</h3>
-                            <p>Dry Port Facility<br>Dar es Salaam, Tanzania</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h3 data-en="Phone" data-sw="Simu">Phone</h3>
-                            <p>+255 XX XXX XXXX<br>Available 24/7</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h3 data-en="Email" data-sw="Barua Pepe">Email</h3>
-                            <p>info@hqlogistics.co.tz<br>support@hqlogistics.co.tz</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i class="fab fa-whatsapp"></i>
-                        <div>
-                            <h3>WhatsApp</h3>
-                            <p>+255 XX XXX XXXX<br data-en="Quick response guaranteed" data-sw="Jibu la haraka linahakikishwa">Quick response guaranteed</p>
-                        </div>
+                    <div class="contact-info">
+                        <h4>Main Office</h4>
+                        <p>Dar es Salaam Port Area<br>Tanzania</p>
                     </div>
                 </div>
-                
-                <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.419544182234!2d39.2831944!3d-6.8309531!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185c4b0c3c3c3c3b%3A0x3c3c3c3c3c3c3c3c!2sDar%20es%20Salaam%20Port!5e0!3m2!1sen!2stz!4v1234567890123" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h4>Dry Port</h4>
+                        <p>Dry Port Facility<br>Dar es Salaam, Tanzania</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h4>Email</h4>
+                        <p>info@hqlogistics.co.tz<br>support@hqlogistics.co.tz</p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h4>Hours</h4>
+                        <p>Mon-Fri: 7AM-6PM<br>Sat: 8AM-2PM</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1399,721 +1561,164 @@
 
     <!-- Footer -->
     <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>HQ LOGISTICS</h3>
-                <p data-en="Your trusted partner for reliable cargo transport from port to dry port in Tanzania." data-sw="Mshirika wako wa kuaminika kwa usafirishaji wa mizigo wa kutegemewa kutoka bandari hadi bandari kavu Tanzania.">Your trusted partner for reliable cargo transport from port to dry port in Tanzania.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>HQ LOGISTICS</h4>
+                    <p style="color: rgba(255,255,255,0.7); margin-bottom: var(--space-4);">Your trusted partner for reliable cargo transport. Excellence in logistics since 2020.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
+                        <li><a href="#tracking" onclick="scrollToSection('tracking')">Track Cargo</a></li>
+                        <li><a href="#services" onclick="scrollToSection('services')">Services</a></li>
+                        <li><a href="#news" onclick="scrollToSection('news')">News</a></li>
+                        <li><a href="#jobs" onclick="scrollToSection('jobs')">Careers</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Port Transport</a></li>
+                        <li><a href="#services">Cargo Handling</a></li>
+                        <li><a href="#services">Warehousing</a></li>
+                        <li><a href="#services">Customs Clearance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li style="color: rgba(255,255,255,0.7);">info@hqlogistics.co.tz</li>
+                        <li style="color: rgba(255,255,255,0.7);">Dar es Salaam, Tanzania</li>
+                    </ul>
                 </div>
             </div>
-            
-            <div class="footer-section">
-                <h3 data-en="Quick Links" data-sw="Viungo vya Haraka">Quick Links</h3>
-                <ul>
-                    <li><a href="#home" data-en="Home" data-sw="Nyumbani">Home</a></li>
-                    <li><a href="#services" data-en="Services" data-sw="Huduma">Services</a></li>
-                    <li><a href="#tracking" data-en="Track Cargo" data-sw="Fuatilia Mizigo">Track Cargo</a></li>
-                    <li><a href="#quote" data-en="Get Quote" data-sw="Omba Bei">Get Quote</a></li>
-                    <li><a href="#contact" data-en="Contact" data-sw="Wasiliana">Contact</a></li>
-                </ul>
+
+            <div class="copyright">
+                <p>&copy; 2025 HQ Logistics. All rights reserved.</p>
             </div>
-            
-            <div class="footer-section">
-                <h3 data-en="Services" data-sw="Huduma">Services</h3>
-                <ul>
-                    <li><a href="#" data-en="Port to Dry Port Transport" data-sw="Usafirishaji Bandari hadi Bandari Kavu">Port to Dry Port Transport</a></li>
-                    <li><a href="#" data-en="Cargo Handling" data-sw="Ushughulikaji wa Mizigo">Cargo Handling</a></li>
-                    <li><a href="#" data-en="Warehousing" data-sw="Uhifadhi">Warehousing</a></li>
-                    <li><a href="#" data-en="Customs Support" data-sw="Msaada wa Forodha">Customs Support</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h3 data-en="Operating Hours" data-sw="Masaa ya Kufanya Kazi">Operating Hours</h3>
-                <ul>
-                    <li data-en="Monday - Friday: 7:00 AM - 6:00 PM" data-sw="Jumatatu - Ijumaa: 7:00 Asubuhi - 6:00 Jioni">Monday - Friday: 7:00 AM - 6:00 PM</li>
-                    <li data-en="Saturday: 8:00 AM - 2:00 PM" data-sw="Jumamosi: 8:00 Asubuhi - 2:00 Mchana">Saturday: 8:00 AM - 2:00 PM</li>
-                    <li data-en="Sunday: Closed" data-sw="Jumapili: Imefungwa">Sunday: Closed</li>
-                    <li data-en="24/7 Emergency Support" data-sw="Msaada wa Dharura 24/7">24/7 Emergency Support</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="copyright">
-            <p>&copy; 2025 HQ Logistics. <span data-en="All rights reserved." data-sw="Haki zote zimehifadhiwa.">All rights reserved.</span></p>
         </div>
     </footer>
 
-    </div>
-    <!-- End Main Content Wrapper -->
-
-    <!-- Client Portal Page -->
-    <section class="portal-page" id="portalPage">
-        <div class="portal-container">
-            <a href="#home" class="back-to-home" onclick="hidePortalPage(event)">
-                <i class="fas fa-arrow-left"></i>
-                <span data-en="Back to Home" data-sw="Rudi Nyumbani">Back to Home</span>
-            </a>
-            
-            <!-- Login/Signup Forms -->
-            <div id="authForms">
-                <div class="portal-header">
-                    <i class="fas fa-user-circle"></i>
-                    <h2 data-en="Client Portal" data-sw="Kituo cha Mteja">Client Portal</h2>
-                    <p data-en="Access your shipments and manage your account" data-sw="Fikia mizigo yako na dhibiti akaunti yako">Access your shipments and manage your account</p>
-                </div>
-
-                <div class="portal-tabs">
-                    <button class="portal-tab active" onclick="switchTab('login')" data-en="Login" data-sw="Ingia">Login</button>
-                    <button class="portal-tab" onclick="switchTab('signup')" data-en="Sign Up" data-sw="Jisajili">Sign Up</button>
-                </div>
-
-                <!-- Login Form -->
-                <div class="portal-content active" id="loginContent">
-                    <form class="portal-form" onsubmit="handleLogin(event)">
-                        <div class="form-group">
-                            <label data-en="Email Address" data-sw="Barua Pepe">Email Address</label>
-                            <input type="email" required placeholder="john@example.com">
-                        </div>
-                        <div class="form-group">
-                            <label data-en="Password" data-sw="Nywila">Password</label>
-                            <input type="password" required placeholder="••••••••">
-                        </div>
-                        <div class="forgot-password">
-                            <a href="#" data-en="Forgot Password?" data-sw="Umesahau Nywila?">Forgot Password?</a>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-sign-in-alt"></i> <span data-en="Login" data-sw="Ingia">Login</span>
-                        </button>
-                    </form>
-
-                    <div class="portal-divider" data-en="or continue with" data-sw="au endelea na">or continue with</div>
-
-                    <div class="social-login">
-                        <button class="social-btn google" onclick="socialLogin('google')">
-                            <i class="fab fa-google"></i>
-                        </button>
-                        <button class="social-btn facebook" onclick="socialLogin('facebook')">
-                            <i class="fab fa-facebook-f"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dashboard (shown after login) -->
-            <div class="dashboard-container" id="dashboardContent">
-                <div class="dashboard-header">
-                    <h2 data-en="Welcome Back!" data-sw="Karibu Tena!">Welcome Back!</h2>
-                </div>
-
-                <div class="user-info">
-                    <i class="fas fa-user-circle"></i>
-                    <h3 id="userName">John Doe</h3>
-                    <p id="userEmail">john@example.com</p>
-                </div>
-
-                <div class="dashboard-stats">
-                    <div class="stat-card">
-                        <i class="fas fa-box"></i>
-                        <h4 data-en="Active Shipments" data-sw="Mizigo Hai">Active Shipments</h4>
-                        <p>3</p>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-check-circle"></i>
-                        <h4 data-en="Completed" data-sw="Iliyokamilika">Completed</h4>
-                        <p>12</p>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-clock"></i>
-                        <h4 data-en="Pending" data-sw="Inasubiri">Pending</h4>
-                        <p>1</p>
-                    </div>
-                </div>
-
-                <div class="shipment-list">
-                    <h3 data-en="Recent Shipments" data-sw="Mizigo ya Hivi Karibuni">Recent Shipments</h3>
-                    
-                    <div class="shipment-item">
-                        <div class="shipment-info">
-                            <h4>HQ123456</h4>
-                            <p data-en="Container - 2 Tons" data-sw="Kontena - Tani 2">Container - 2 Tons</p>
-                            <p><i class="fas fa-calendar"></i> Nov 10, 2025</p>
-                        </div>
-                        <span class="shipment-status status-transit" data-en="In Transit" data-sw="Njiani">In Transit</span>
-                    </div>
-
-                    <div class="shipment-item">
-                        <div class="shipment-info">
-                            <h4>HQ123455</h4>
-                            <p data-en="General Cargo - 1.5 Tons" data-sw="Mizigo ya Kawaida - Tani 1.5">General Cargo - 1.5 Tons</p>
-                            <p><i class="fas fa-calendar"></i> Nov 8, 2025</p>
-                        </div>
-                        <span class="shipment-status status-delivered" data-en="Delivered" data-sw="Imefika">Delivered</span>
-                    </div>
-
-                    <div class="shipment-item">
-                        <div class="shipment-info">
-                            <h4>HQ123454</h4>
-                            <p data-en="Heavy Equipment - 5 Tons" data-sw="Vifaa Vizito - Tani 5">Heavy Equipment - 5 Tons</p>
-                            <p><i class="fas fa-calendar"></i> Nov 5, 2025</p>
-                        </div>
-                        <span class="shipment-status status-pending" data-en="Pending" data-sw="Inasubiri">Pending</span>
-                    </div>
-                </div>
-
-                <button class="logout-btn" onclick="handleLogout()">
-                    <i class="fas fa-sign-out-alt"></i> <span data-en="Logout" data-sw="Toka">Logout</span>
-                </button>
-            </div>
-        </div>
-    </section>
-
     <script>
-        // Initialize EmailJS with your Public Key
-        (function() {
-            emailjs.init("23kuhvC5NQ_UQo25m");
-        })();
-
         // Supabase Configuration
         const SUPABASE_URL = 'https://zoamybopeghkvrdjvxbb.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvYW15Ym9wZWdoa3ZyZGp2eGJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4MTUzODUsImV4cCI6MjA3ODM5MTM4NX0.qbym3I5xjsuvl0g8ybjzL-AE4TwANwjvNOknfQLufJ0';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        let currentUser = null;
-        
-        supabase.auth.onAuthStateChange((event, session) => {
-            if (session) {
-                currentUser = session.user;
-                console.log('User logged in:', currentUser.email);
-            } else {
-                currentUser = null;
-            }
-        });
-
-        // Client Portal Functions
-        function showPortalPage(event) {
-            event.preventDefault();
-            document.getElementById('mainContent').classList.add('hidden');
-            document.getElementById('portalPage').classList.add('active');
-            window.scrollTo(0, 0);
-            const navLinks = document.getElementById('navLinks');
-            const menuToggle = document.querySelector('.menu-toggle');
-            if (navLinks) navLinks.classList.remove('active');
-            if (menuToggle) menuToggle.classList.remove('active');
-        }
-        
-        function hidePortalPage(event) {
-            event.preventDefault();
-            document.getElementById('portalPage').classList.remove('active');
-            document.getElementById('mainContent').classList.remove('hidden');
-            document.getElementById('authForms').style.display = 'block';
-            document.getElementById('dashboardContent').classList.remove('active');
-            window.scrollTo(0, 0);
-        }
-        
-        function switchTab(tab) {
-            const tabs = document.querySelectorAll('.portal-tab');
-            tabs.forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            document.getElementById('loginContent').classList.remove('active');
-            document.getElementById('signupContent').classList.remove('active');
-            
-            if (tab === 'login') {
-                document.getElementById('loginContent').classList.add('active');
-            } else {
-                document.getElementById('signupContent').classList.add('active');
-            }
-        }
-        
-        async function handleLogin(event) {
-            event.preventDefault();
-            const email = event.target[0].value;
-            const password = event.target[1].value;
-            
-            try {
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
-                
-                if (error) throw error;
-                
-                const userData = {
-                    name: data.user.user_metadata.name || data.user.email.split('@')[0],
-                    email: data.user.email
-                };
-                
-                showDashboard(userData);
-                await loadUserShipments(data.user.id);
-                
-            } catch (error) {
-                alert(currentLang === 'en' ? 
-                    'Invalid email or password' : 
-                    'Barua pepe au nywila si sahihi');
-                console.error('Login error:', error);
-            }
-        }
-        
-        async function handleSignup(event) {
-            event.preventDefault();
-            const name = event.target[0].value;
-            const email = event.target[1].value;
-            const phone = event.target[2].value;
-            const password = event.target[3].value;
-            
-            try {
-                const { data, error } = await supabase.auth.signUp({
-                    email: email,
-                    password: password,
-                    options: {
-                        data: {
-                            name: name,
-                            phone: phone
-                        }
-                    }
-                });
-                
-                if (error) throw error;
-                
-                alert(currentLang === 'en' ? 
-                    'Account created! Please check your email to verify.' : 
-                    'Akaunti imeundwa! Tafadhali angalia barua pepe yako kuhakikisha.');
-                
-                const userData = {
-                    name: name,
-                    email: email
-                };
-                showDashboard(userData);
-                
-            } catch (error) {
-                alert(currentLang === 'en' ? 
-                    'Error creating account: ' + error.message : 
-                    'Hitilafu kuunda akaunti: ' + error.message);
-                console.error('Signup error:', error);
-            }
-        }
-        
-        function showDashboard(userData) {
-            document.getElementById('authForms').style.display = 'none';
-            document.getElementById('userName').textContent = userData.name;
-            document.getElementById('userEmail').textContent = userData.email;
-            document.getElementById('dashboardContent').classList.add('active');
+        let supabase;
+        if (typeof window.supabase !== 'undefined') {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         }
 
-        async function loadUserShipments(userId) {
-            try {
-                const { data, error } = await supabase
-                    .from('shipments')
-                    .select('*')
-                    .eq('user_id', userId)
-                    .order('created_at', { ascending: false });
-                
-                if (error) throw error;
-                
-                displayShipments(data);
-                updateStats(data);
-                
-            } catch (error) {
-                console.error('Error loading shipments:', error);
-            }
-        }
-        
-        function displayShipments(shipments) {
-            const shipmentList = document.querySelector('.shipment-list');
+        // Hero Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.slider-dot');
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
             
-            if (shipments.length === 0) {
-                shipmentList.innerHTML = '<h3 data-en="Recent Shipments" data-sw="Mizigo ya Hivi Karibuni">Recent Shipments</h3><p style="text-align: center; color: var(--gray); padding: 2rem 0;">No shipments yet</p>';
-                return;
-            }
+            currentSlide = index;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
             
-            let html = '<h3 data-en="Recent Shipments" data-sw="Mizigo ya Hivi Karibuni">Recent Shipments</h3>';
-            
-            shipments.forEach(shipment => {
-                const statusClass = shipment.status === 'delivered' ? 'status-delivered' : 
-                                  shipment.status === 'in_transit' ? 'status-transit' : 'status-pending';
-                                  
-                html += `
-                    <div class="shipment-item">
-                        <div class="shipment-info">
-                            <h4>${shipment.tracking_number}</h4>
-                            <p>${shipment.cargo_type} - ${shipment.weight} kg</p>
-                            <p><i class="fas fa-calendar"></i> ${new Date(shipment.created_at).toLocaleDateString()}</p>
-                        </div>
-                        <span class="shipment-status ${statusClass}">${shipment.status.replace('_', ' ')}</span>
-                    </div>
-                `;
-            });
-            
-            shipmentList.innerHTML = html;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
         }
-        
-        function updateStats(shipments) {
-            const active = shipments.filter(s => s.status === 'in_transit' || s.status === 'at_port').length;
-            const completed = shipments.filter(s => s.status === 'delivered').length;
-            const pending = shipments.filter(s => s.status === 'pending').length;
-            
-            document.querySelector('.stat-card:nth-child(1) p').textContent = active;
-            document.querySelector('.stat-card:nth-child(2) p').textContent = completed;
-            document.querySelector('.stat-card:nth-child(3) p').textContent = pending;
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
         }
-        
-        async function handleLogout() {
-            try {
-                await supabase.auth.signOut();
-                document.getElementById('authForms').style.display = 'block';
-                document.getElementById('dashboardContent').classList.remove('active');
-                hidePortalPage(new Event('click'));
-                alert(currentLang === 'en' ? 
-                    'Logged out successfully!' : 
-                    'Umetoka kwa mafanikio!');
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
+
+        function goToSlide(index) {
+            showSlide(index);
         }
-        
-        function socialLogin(provider) {
-            alert(currentLang === 'en' ? 
-                `${provider} login will be integrated with your authentication system` : 
-                `Kuingia kwa ${provider} kutaunganishwa na mfumo wako wa uthibitishaji`);
-        }
+
+        // Auto-advance slider
+        setInterval(nextSlide, 5000);
 
         // Language Toggle
         let currentLang = 'en';
         
         function toggleLanguage() {
             currentLang = currentLang === 'en' ? 'sw' : 'en';
-            updateLanguage();
-            
-            const langText = document.getElementById('currentLangText');
-            if (langText) {
-                langText.textContent = currentLang === 'en' ? 'English' : 'Kiswahili';
-            }
+            // Language switching logic here
         }
-        
-        function updateLanguage() {
-            const elements = document.querySelectorAll('[data-en][data-sw]');
-            elements.forEach(el => {
-                const text = el.getAttribute('data-' + currentLang);
-                if (text) {
-                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                        el.placeholder = text;
-                    } else if (el.tagName === 'OPTION') {
-                        el.textContent = text;
-                    } else {
-                        if (el.children.length === 0) {
-                            el.textContent = text;
-                        }
-                    }
-                }
-            });
-        }
-        
-        // Mobile Menu Toggle
+
+        // Mobile Menu
         function toggleMenu() {
             const navLinks = document.getElementById('navLinks');
-            const menuToggle = document.querySelector('.menu-toggle');
+            const menuToggle = document.getElementById('menuToggle');
             navLinks.classList.toggle('active');
             menuToggle.classList.toggle('active');
         }
-        
-        // Hide header on scroll down (mobile only)
-        let lastScrollTop = 0;
-        const header = document.querySelector('header');
-        let scrollTimeout;
+
+        // Smooth Scroll
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const navHeight = 120;
+                const targetPosition = section.offsetTop - navHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                
+                const navLinks = document.getElementById('navLinks');
+                const menuToggle = document.getElementById('menuToggle');
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+            return false;
+        }
+
+        // Scroll to Top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Header Scroll Effect
+        const header = document.getElementById('header');
+        const scrollTopBtn = document.querySelector('.fab-scroll');
         
         window.addEventListener('scroll', () => {
-            if (window.innerWidth <= 768) {
-                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                
-                clearTimeout(scrollTimeout);
-                
-                scrollTimeout = setTimeout(() => {
-                    if (scrollTop > lastScrollTop && scrollTop > 100) {
-                        header.classList.add('hide-mobile');
-                    } else {
-                        header.classList.remove('hide-mobile');
-                    }
-                    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-                }, 10);
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                header.classList.add('scrolled');
             } else {
-                header.classList.remove('hide-mobile');
+                header.classList.remove('scrolled');
+            }
+            
+            if (scrollTop > 300) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
             }
         });
-        
-        // Smooth Scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                if (this.getAttribute('href') === '#portal') {
-                    return;
-                }
-                
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    document.getElementById('navLinks').classList.remove('active');
-                }
-            });
-        });
-        
-        // Cargo Tracking Function
+
+        // Cargo Tracking
         async function trackCargo() {
             const trackingNumber = document.getElementById('trackingNumber').value.trim();
             const trackingResult = document.getElementById('trackingResult');
+            const progressFill = document.getElementById('progressFill');
             
             if (trackingNumber === '') {
-                alert(currentLang === 'en' ? 'Please enter a tracking number' : 'Tafadhali ingiza nambari ya ufuatiliaji');
+                showNotification('Please enter a tracking number', 'error');
                 return;
             }
-            
-            try {
-                const { data, error } = await supabase
-                    .from('shipments')
-                    .select('*')
-                    .eq('tracking_number', trackingNumber)
-                    .single();
-                
-                if (error) throw error;
-                
-                trackingResult.style.display = 'block';
-                trackingResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                
-            } catch (error) {
-                alert(currentLang === 'en' ? 
-                    'Tracking number not found' : 
-                    'Nambari ya ufuatiliaji haipatikani');
-                trackingResult.style.display = 'none';
-            }
-        }
-        
-        document.getElementById('trackingNumber').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                trackCargo();
-            }
-        });
-        
-        // Quote Form Submission
-        async function submitQuote(event) {
-            event.preventDefault();
-            
-            const formData = {
-                name: event.target[0].value,
-                company: event.target[1].value,
-                email: event.target[2].value,
-                phone: event.target[3].value,
-                cargo_type: event.target[4].value,
-                weight: parseFloat(event.target[5].value),
-                description: event.target[6].value,
-                status: 'pending'
-            };
-            
-            try {
-                const submitBtn = event.target.querySelector('button[type="submit"]');
-                const originalText = submitBtn.innerHTML;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-                submitBtn.disabled = true;
-                
-                if (typeof supabase !== 'undefined') {
-                    const { data, error } = await supabase
-                        .from('quotes')
-                        .insert([formData]);
-                    
-                    if (error) throw error;
-                }
-                
-                await emailjs.send(
-                    'YOUR_SERVICE_ID',
-                    'YOUR_TEAM_TEMPLATE_ID',
-                    {
-                        from_name: formData.name,
-                        from_email: formData.email,
-                        phone: formData.phone,
-                        company: formData.company || 'Not provided',
-                        cargo_type: formData.cargo_type,
-                        weight: formData.weight,
-                        description: formData.description || 'No description',
-                        request_date: new Date().toLocaleString()
-                    }
-                );
-                
-                await emailjs.send(
-                    'YOUR_SERVICE_ID',
-                    'YOUR_CUSTOMER_TEMPLATE_ID',
-                    {
-                        from_name: formData.name,
-                        from_email: formData.email,
-                        phone: formData.phone,
-                        cargo_type: formData.cargo_type,
-                        weight: formData.weight
-                    }
-                );
-                
-                document.getElementById('successMessage').style.display = 'block';
-                event.target.reset();
-                
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-                
-                setTimeout(() => {
-                    document.getElementById('successMessage').style.display = 'none';
-                }, 5000);
-                
-            } catch (error) {
-                const submitBtn = event.target.querySelector('button[type="submit"]');
-                if (submitBtn) {
-                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span data-en="Submit Request" data-sw="Wasilisha Ombi">Submit Request</span>';
-                    submitBtn.disabled = false;
-                }
-                
-                alert(currentLang === 'en' ? 
-                    'Error submitting quote request. Please try again.' : 
-                    'Hitilafu kuwasilisha ombi la bei. Tafadhali jaribu tena.');
-                console.error('Quote submission error:', error);
-            }
-            
-            return false;
-        }
-        
-        // Intersection Observer for Animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.service-card, .flow-step, .testimonial-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.6s ease-out';
-            observer.observe(el);
-        });
-        
-        // Active Navigation Highlighting
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section[id]');
-            const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-            
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.style.color = '';
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.style.color = 'var(--accent)';
-                }
-            });
-        });
-    </script>
-</body>
-</html></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Signup Form -->
-                <div class="portal-content" id="signupContent">
-                    <form class="portal-form" onsubmit="handleSignup(event)">
-                        <div class="form-group">
-                            <label data-en="Full Name" data-sw="Jina Kamili">Full Name</label>
-                            <input type="text" required placeholder="John Doe">
-                        </div>
-                        <div class="form-group">
-                            <label data-en="Email Address" data-sw="Barua Pepe">Email Address</label>
-                            <input type="email" required placeholder="john@example.com">
-                        </div>
-                        <div class="form-group">
-                            <label data-en="Phone Number" data-sw="Nambari ya Simu">Phone Number</label>
-                            <input type="tel" required placeholder="+255 123 456 789">
-                        </div>
-                        <div class="form-group">
-                            <label data-en="Password" data-sw="Nywila">Password</label>
-                            <input type="password" required placeholder="••••••••">
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-user-plus"></i> <span data-en="Create Account" data-sw="Fungua Akaunti">Create Account</span>
-                        </button>
-                    </form>
-
-                    <div class="portal-divider" data-en="or sign up with" data-sw="au jisajili na">or sign up with</div>
-
-                    <div class="social-login">
-                        <button class="social-btn google" onclick="socialLogin('google')">
-                            <i class="fab fa-google"></i>
-                        </button>
-                        <button class="social-btn facebook" onclick="socialLogin('facebook')">
-                            <i class="fab fa-facebook-f {
-                width: 100%;
-                margin-top: 1rem;
-                padding-top: 1rem;
-                border-top: 1px solid rgba(255,255,255,0.2);
-            }
-            
-            .mobile-lang-btn {
-                width: 100%;
-                background: var(--primary);
-                color: var(--white);
-                border: none;
-                padding: 1rem;
-                border-radius: 10px;
-                font-size: 1rem;
-                font-weight: bold;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                transition: all 0.3s;
-            }
-            
-            .mobile-lang-btn:hover {
-                background: var(--accent);
-                transform: translateX(5px);
-            }
-            
-            .mobile-lang-btn i:first-child {
-                font-size: 1.2rem;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .flow-arrow {
-                display: none;
-            }
-
-            .tracking-input {
-                flex-direction: column;
-            }
-            
-            .mobile-lang-item

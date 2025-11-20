@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HQ Logistics Services - Port to dry port transport, cargo handling, warehousing, customs clearance, sea freight, air freight and more.">
+    <title>Our Services | HQ Logistics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #800020;
+            --secondary: #0a0a0a;
+            --accent: #a81c3f;
+            --light: #fafafa;
+            --white: #ffffff;
+            --gray: #64748b;
+            --dark-gray: #1e293b;
+            --success: #10b981;
+            
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--secondary);
+            overflow-x: hidden;
+            background: var(--white);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Header - Matching Main Page */
+        header {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: var(--space-4) 0;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1400px;
+            z-index: 1000;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header.scrolled {
+            padding: var(--space-3) 0;
+            top: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 var(--space-8);
+        }
+
+        .logo {
+            cursor: pointer;
+        }
+
+        .logo img {
+            height: 85px;
+            width: auto;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        header.scrolled .logo img {
+            height: 70px;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 4px 12px rgba(128, 0, 32, 0.4));
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: var(--space-6);
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.95);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            position: relative;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            text-shadow: 0 2px 8px rgba(128, 0, 32, 0.5);
+        }
+
+        .lang-toggle {
+            background: var(--primary);
+            color: white;
+            padding: var(--space-2) var(--space-6);
+            border-radius: 20px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(128, 0, 32, 0.3);
+        }
+
+        .lang-toggle:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(128, 0, 32, 0.4);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Page Hero */
+        .page-hero {
+            margin-top: 0;
+     
+            padding-top: 180px;
+            padding-bottom: 80px;
+
+
+            background: linear-gradient(135deg, var(--secondary) 0%, #050505 100%);
+            color: rgb(245, 242, 242);
+            text-align: center;
+        }
+
+        .page-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: var(--space-4);
+            letter-spacing: -0.02em;
+        }
+
+        .page-hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Services Grid */
+        .services-section {
+            padding: var(--space-16) var(--space-8);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .services-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto var(--space-16);
+        }
+
+        .services-intro h2 {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: var(--space-4);
+            color: var(--secondary);
+        }
+
+        .services-intro p {
+            font-size: 1.125rem;
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--space-12);
+            margin-bottom: var(--space-16);
+        }
+
+        .service-detail-card {
+            background: var(--white);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .service-detail-card:hover {
+            transform: translateY(-12px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .service-detail-card:hover .service-image {
+            transform: scale(1.05);
+        }
+
+        .service-content {
+            padding: var(--space-8);
+        }
+
+        .service-icon-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+
+        .service-icon-lg {
+            width: 64px;
+            height: 64px;
+            background: rgba(128, 0, 32, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+
+        .service-detail-card:hover .service-icon-lg {
+            background: var(--primary);
+            color: rgb(241, 237, 237);
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .service-content h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--secondary);
+            flex: 1;
+        }
+
+        .service-content p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: var(--space-6);
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: var(--space-6);
+        }
+
+        .service-features li {
+            padding: var(--space-3) 0;
+            color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .service-features li:last-child {
+            border-bottom: none;
+        }
+
+        .service-features i {
+            color: var(--success);
+            font-size: 1.125rem;
+        }
+
+        .btn {
+            padding: var(--space-4) var(--space-8);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 14px rgba(128, 0, 32, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(128, 0, 32, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Why Choose Us */
+        .why-choose {
+            background: var(--light);
+            padding: var(--space-16) var(--space-8);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-8);
+        }
+
+        .why-card {
+            text-align: center;
+            padding: var(--space-8);
+            background: white;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .why-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .why-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(128, 0, 32, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-6);
+            font-size: 2.5rem;
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+
+        .why-card:hover .why-icon {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .why-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--space-3);
+            color: var(--secondary);
+        }
+
+        .why-card p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: var(--space-16) var(--space-8);
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: var(--space-4);
+        }
+
+        .cta-section p {
+            font-size: 1.25rem;
+            margin-bottom: var(--space-8);
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--space-4);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-white:hover {
+            background: var(--light);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: #000;
+            color: white;
+            padding: var(--space-16) var(--space-8) var(--space-8);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-12);
+            margin-bottom: var(--space-12);
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-section h4 {
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+            color: var(--primary);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: var(--space-3);
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+            padding-left: var(--space-2);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: var(--space-8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Floating Action Buttons */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-3);
+            z-index: 999;
+        }
+
+        .fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-xl);
+            border: none;
+            text-decoration: none;
+        }
+
+        .fab-whatsapp {
+            background: #25d366;
+            color: white;
+        }
+
+        .fab-phone {
+            background: var(--primary);
+            color: white;
+        }
+
+        .fab:hover {
+            transform: translateY(-8px) scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                width: calc(100% - 20px);
+                top: 10px;
+                border-radius: 16px;
+            }
+
+            header.scrolled {
+                top: 5px;
+            }
+
+            .logo img {
+                height: 60px;
+            }
+
+            header.scrolled .logo img {
+                height: 50px;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 90px;
+                left: -100%;
+                flex-direction: column;
+                background: rgba(10, 10, 10, 0.98);
+                backdrop-filter: blur(20px);
+                width: calc(100% - 20px);
+                margin: 0 10px;
+                padding: var(--space-8);
+                transition: left 0.3s;
+                align-items: flex-start;
+                max-height: calc(100vh - 110px);
+                overflow-y: auto;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 16px;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .page-hero {
+                margin-top: 100px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Action Buttons -->
+    <div class="fab-container">
+        <a href="https://wa.me/255XXXXXXXXX" class="fab fab-whatsapp" aria-label="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="tel:+255XXXXXXXXX" class="fab fab-phone" aria-label="Call">
+            <i class="fas fa-phone"></i>
+        </a>
+    </div>
+
+   <!-- Header -->
+    <header id="header">
+        <nav>
+            <div class="logo" onclick="window.location.href='index.html'">
+                <img src="image/image 8.png" alt="HQ Logistics Logo">
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="hq.html">Home</a></li>
+                <li><a href="hq.html#tracking">Track Cargo</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="hq.html#news">News</a></li>
+                <li><a href="hq.html#jobs">Careers</a></li>
+                <li><a href="hq.html#contact">Contact</a></li>
+                <li>
+                    <button class="lang-toggle" onclick="toggleLanguage()">EN / SW</button>
+                </li>
+            </ul>
+            <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>Our Services</h1>
+            <p>Comprehensive logistics solutions tailored to meet your unique business needs. From port to doorstep, we've got you covered.</p>
+        </div>
+    </section>
+
+    <!-- Services Intro -->
+    <section class="services-section">
+        <div class="container">
+            <div class="services-intro">
+                <h2>Complete Logistics Solutions</h2>
+                <p>At HQ Logistics, we offer end-to-end logistics services designed to streamline your supply chain, reduce costs, and ensure timely delivery of your cargo across Tanzania and beyond.</p>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="services-grid">
+                <!-- Port to Dry Port Transport -->
+                <div class="service-detail-card">
+                    <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=800&q=80" alt="Port Transport" class="service-image">
+                    <div class="service-content">
+                        <div class="service-icon-header">
+                            <div class="service-icon-lg">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <h3>Port to Dry Port Transport</h3>
+                        </div>
+                        <p>Swift and secure transportation of your cargo from Dar es Salaam port to our inland dry port facilities with real-time GPS tracking and guaranteed delivery times.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> Real-time GPS tracking</li>
+                            <li><i class="fas fa-check-circle"></i> 24/7 fleet monitoring</li>
+                            <li><i class="fas fa-check-circle"></i> Guaranteed delivery times</li>
+                            <li><i class="fas fa-check-circle"></i> Modern fleet of trucks</li>
+                            <li><i class="fas fa-check-circle"></i> Insurance coverage included</li>
+                        </ul>
+                        <a href="index.html#contact" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i>
+                            Request Quote
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cargo Handling -->
+                <div class="service-detail-card">
+                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80" alt="Cargo Handling" class="service-image">
+                    <div class="service-content">
+                        <div class="service-icon-header">
+                            <div class="service-icon-lg">
+                                <i class="fas fa-boxes"></i>
+                            </div>
+                            <h3>Cargo Handling</h3>
+                        </div>
+                        <p>Professional loading, unloading, and handling services with specialized equipment and trained personnel for all types of cargo including fragile and hazardous materials.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> Specialized equipment</li>
+                            <li><i class="fas fa-check-circle"></i> Trained handling staff</li>
+                            <li><i class="fas fa-check-circle"></i> Fragile goods expertise</li>
+                            <li><i class="fas fa-check-circle"></i> Hazardous materials certified</li>
+                            <li><i class="fas fa-check-circle"></i> Safe handling protocols</li>
+                        </ul>
+                        <a href="index.html#contact" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i>
+                            Request Quote
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Warehousing & Storage -->
+                <div class="service-detail-card">
+                    <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=800&q=80" alt="Warehousing" class="service-image">
+                    <div class="service-content">
+                        <div class="service-icon-header">
+                            <div class="service-icon-lg">
+                                <i class="fas fa-warehouse"></i>
+                            </div>
+                            <h3>Warehousing & Storage</h3>
+                        </div>
+                        <p>Secure, climate-controlled warehouse facilities with 24/7 surveillance, inventory management systems, and flexible storage solutions for short or long-term needs.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> 24/7 security surveillance</li>
+                            <li><i class="fas fa-check-circle"></i> Climate-controlled facilities</li>
+                            <li><i class="fas fa-check-circle"></i> Inventory management system</li>
+                            <li><i class="fas fa-check-circle"></i> Flexible storage terms</li>
+                            <li><i class="fas fa-check-circle"></i> Easy access and retrieval</li>
+                        </ul>
+                        <a href="index.html#contact" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i>
+                            Request Quote
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Customs Clearance -->
+                <div class="service-detail-card">
+                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80" alt="Customs Clearance" class="service-image">
+                    <div class="service-content">
+                        <div class="service-icon-header">
+                            <div class="service-icon-lg">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <h3>Customs Clearance Support</h3>
+                        </div>
+                        <p>Expert customs clearance services with experienced brokers who navigate complex regulations, ensuring smooth and fast processing of all required documentation.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> Licensed customs brokers</li>
+                            <li><i class="fas fa-check-circle"></i> Fast documentation processing</li>
+                            <li><i class="fas fa-check-circle"></i> Duty calculation assistance</li>
+                            <li><i class="fas fa-check-circle"></i> Compliance expertise</li>
+                            <li><i class="fas fa-check-circle"></i> Duty payment facilitation</li>
+                        </ul>
+                        <a href="index.html#contact" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i>
+                            Request Quote
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sea Freight -->
+                <div class="service-detail-card">
+                    <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80" alt="Sea Freight" class="service-image">
+                    <div class="service-content">
+                        <div class="service-icon-header">
+                            <div class="service-icon-lg">
+                                <i class="fas fa-ship"></i>
+                            </div>
+                            <h3>Sea Freight</h3>
+                        </div>
+                        <p>Cost-effective international sea freight services with partnerships with major shipping lines, offering both FCL and LCL options for global cargo movements.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> FCL & LCL options</li>
+                            <li><i class="fas fa-check-circle"></i> Major shipping line partners</li>
+                            <li><i class="fas fa-check-circle"></i> Competitive rates</li>
+                            <li><i class="fas fa-check-circle"></i> Door-to-port service</li>
+                            <li><i class="fas fa-check-circle"></i> Documentation support</li>
+                        </ul>
+                        <a href="index.html#contact" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i>
+                            Request Quote
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Air Freight -->
+                <div class="service-detail-card">
+                    <img src="https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800&q=80" alt="Air Freight" class="service-image">
+                    <div class="service-content">
+                        <div class="service-icon-header">
+                            <div class="service-icon-lg">
+                                <i class="fas fa-plane"></i>
+                            </div>
+                            <h3>Air Freight</h3>
+                        </div>
+                        <p>Express air freight solutions for time-sensitive shipments with connections to major airlines and airports worldwide, ensuring your urgent cargo arrives on time.</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check-circle"></i> Express delivery options</li>
+                            <li><i class="fas fa-check-circle"></i> Global airline network</li>
+                            <li><i class="fas fa-check-circle"></i> Priority handling</li>
+                            <li><i class="fas fa-check-circle"></i> Temperature-controlled options</li>
+                            <li><i class="fas fa-check-circle"></i> Same-day service available</li>
+                        </ul>
+                        <a href="index.html#contact" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i>
+                            Request Quote
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-choose">
+        <div class="container">
+            <div class="services-intro">
+                <h2>Why Choose HQ Logistics?</h2>
+                <p>We combine experience, technology, and dedication to deliver exceptional logistics services</p>
+            </div>
+
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>On-Time Delivery</h3>
+                    <p>98% on-time delivery rate with guaranteed service levels and penalty-free guarantees</p>
+                </div>
+
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure & Insured</h3>
+                    <p>Full insurance coverage and advanced security measures for complete peace of mind</p>
+                </div>
+
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock customer support team ready to assist with any queries or concerns</p>
+                </div>
+
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Real-Time Tracking</h3>
+                    <p>Advanced GPS tracking and online portal for complete shipment visibility</p>
+                </div>
+
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>Industry Experience</h3>
+                    <p>Over 5 years of proven excellence in Tanzania's logistics industry</p>
+                </div>
+
+                <div class="why-card">
+                    <div class="why-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h3>Competitive Pricing</h3>
+                    <p>Transparent pricing with no hidden fees and customized solutions for every budget</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Get Started?</h2>
+            <p>Let us handle your logistics needs with professionalism and care</p>
+            <div class="cta-buttons">
+                <a href="index.html#tracking" class="btn btn-white">
+                    <i class="fas fa-search-location"></i>
+                    Track Your Cargo
+                </a>
+                <a href="index.html#contact" class="btn btn-outline" style="background: rgba(255,255,255,0.1); color: white; border-color: white;">
+                    <i class="fas fa-phone"></i>
+                    Contact Us Today
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>HQ LOGISTICS</h4>
+                    <p style="color: rgba(255,255,255,0.7); margin-bottom: var(--space-4);">Your trusted partner for reliable cargo transport. Excellence in logistics since 2020.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#tracking">Track Cargo</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="index.html#news">News</a></li>
+                        <li><a href="index.html#jobs">Careers</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Port Transport</a></li>
+                        <li><a href="#services">Cargo Handling</a></li>
+                        <li><a href="#services">Warehousing</a></li>
+                        <li><a href="#services">Customs Clearance</a></li>
+                        <li><a href="#services">Sea Freight</a></li>
+                        <li><a href="#services">Air Freight</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li style="color: rgba(255,255,255,0.7);">info@hqlogistics.co.tz</li>
+                        <li style="color: rgba(255,255,255,0.7);">Dar es Salaam, Tanzania</li>
+                        <li style="color: rgba(255,255,255,0.7);">Mon-Fri: 7AM-6PM</li>
+                        <li style="color: rgba(255,255,255,0.7);">Sat: 8AM-2PM</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>&copy; 2025 HQ Logistics. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Language Toggle
+        let currentLang = 'en';
+        
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'sw' : 'en';
+            // Language switching logic here
+            console.log('Language switched to:', currentLang);
+        }
+
+        // Header Scroll Effect
+        const header = document.getElementById('header');
+        
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.getElementById('menuToggle');
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const nav = document.querySelector('nav');
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            if (!nav.contains(event.target)) {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                const navLinks = document.getElementById('navLinks');
+                const menuToggle = document.getElementById('menuToggle');
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
